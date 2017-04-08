@@ -1,0 +1,97 @@
+/*General*/
+
+.txt-small {
+    font-size: 25px;
+    line-height: 10px;
+    vertical-align: middle;
+}
+
+
+/*Side Bar Nav*/
+
+.side-nav .list-group-item {
+    background-color: #c4e3ef;
+    color: #1997c6;
+}
+
+.side-nav a.list-group-item:hover, .side-nav a.list-group-item:focus {
+    background: #c4e3ef;
+    color: #0e6d91;
+}
+
+@media only screen and (min-width: 768px) {
+    .side-nav {
+        font-size: 16px;
+    }
+    .side-nav .list-group-item {
+        border-radius: 0.25rem;
+    }
+}
+
+
+/* Medium Devices, Desktops */
+
+@media only screen and (min-width: 992px) {
+    .side-nav .list-group-item {
+        border: 0;
+    }
+    .side-nav .list-group-item.active, .side-nav .list-group-item.active:focus, .side-nav .list-group-item.active:hover {
+        background-color: #1997c6;
+        color: #fff;
+    }
+}
+
+
+/*Panles*/
+
+.panel-heading {
+    background-color: #c2e8e8 !important;
+}
+
+
+/*Widgets*/
+
+.widget-items .h1 {
+    font-size: 55px;
+    font-weight: lighter;
+}
+
+.widget-items .h1 span {
+    color: #b0b3b7;
+}
+
+.widget-items .icon {
+    max-width: 50%;
+}
+
+.widget-items .icon.big {
+    max-width: 80%;
+}
+
+.widget {
+    border: 1px solid #ddd;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    float: none;
+    text-align: center;
+    margin: 20px auto;
+}
+
+
+/*Activity*/
+
+.activity .panel-body>* {
+    float: none;
+    text-align: center;
+    margin: 0 auto;
+}
+
+
+/*Footer*/
+
+#footer {
+    padding: 20px 20px 10px;
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+}
