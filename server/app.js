@@ -24,7 +24,7 @@ app.use('/doctor', doctor);
 });*/
 
 // Connect to Mongo on start
-db.connect('mongodb://localhost:27017/'+mydatabase, function(err) {
+db.connect('mongodb://localhost:27017/'+databaseName, function(err) {
     if (err) {
         console.log(err);
         process.exit(1);

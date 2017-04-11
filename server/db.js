@@ -27,3 +27,35 @@ exports.close = function(done) {
         })
     }
 }
+
+exports.getRecord = function( collection, filter ,callback ) {
+  collection.findOne( filter, function(err, document) {
+    if(err) {
+      res.send(err);
+    } else {
+      callback(document);
+    }
+  });
+},
+
+exports.updateRecord = function( collection, filter, options, callback ) {
+  collection.update( filter, options, function(err){
+    if (err) {
+        res.send(err);
+    } else {
+      callback();
+    }
+  });
+},
+
+exports.addRecord = function( collection, data, callback ) {
+  collection.insert( data, {
+      w: 1
+  }, function(err, records) {
+      if (err) {
+          res.send(err);
+      } else {
+          callback();
+      }
+  });
+}
