@@ -1,73 +1,124 @@
 import React, { Component } from 'react';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      steps: '[]',
+      glucose: '[]',
+      caloriesBurned: '[]',
+      caloriesIntake: '[]'
+    };
+
+    this.activityWidget = this.activityWidget.bind(this);
+    this.glucoseWidget = this.glucoseWidget.bind(this);
+    this.caloriesBurnedWidget = this.caloriesBurnedWidget.bind(this);
+    this.caloriesIntakeWidget = this.caloriesIntakeWidget.bind(this);
+  }
+
+  componentWillMount = function(){
+    this.getLatestSteps();
+    this.getLatestGlucose();
+    this.getLatestCaloriesBurned();
+    this.getLatestCaloriesIntakeWidget();
+  }
+
+  makeGetRequest(url, callback){
+    var request = new Request(url, {
+    	method: 'GET',
+    	mode: 'cors',
+    	redirect: 'follow',
+    	headers: new Headers({
+    		'Content-Type': 'application/json'
+    	})
+    });
+
+    fetch(request).then(function(response) {
+      return response.json();
+    }).then(function(j) {
+      callback(j);
+    });
+  }
+
+  getLatestSteps = function() {
+    this.makeGetRequest('http://localhost:9000/patient/latestActivity', function(json){
+      this.setState({'steps':json})
+    }.bind(this));
+  }
+
+  getLatestGlucose = function() {
+    this.makeGetRequest('http://localhost:9000/patient/latestGlucose', function(json){
+      this.setState({'glucose':json})
+    }.bind(this));
+  }
+
+  getLatestCaloriesBurned = function() {
+    this.makeGetRequest('http://localhost:9000/patient/latestCaloriesBurned', function(json){
+      this.setState({'caloriesBurned':json})
+    }.bind(this));
+  }
+
+  getLatestCaloriesIntakeWidget = function() {
+    this.makeGetRequest('http://localhost:9000/patient/latestCaloriesIntake', function(json){
+      this.setState({'caloriesIntake':json})
+    }.bind(this));
+  }
+
+  activityWidget = function () {
+    return (
+      <div className="widget">
+          <div className="panel-body center">
+            <h2 className="h1"> {this.state.steps.steps} <span className="txt-small">Steps</span></h2>
+          </div>
+      </div>
+    );
+  }
+
+  glucoseWidget = function () {
+    return (
+      <div className="widget">
+          <div className="panel-body center">
+            <h2 className="h1"> {this.state.glucose.value} <span className="txt-small">{this.state.glucose.units}</span></h2>
+          </div>
+      </div>
+    );
+  }
+
+  caloriesBurnedWidget = function () {
+    return (
+      <div className="widget">
+          <div className="panel-body center">
+            <h2 className="h1"> {this.state.caloriesBurned.calories} <span className="txt-small">{this.state.caloriesBurned.units}</span></h2>
+          </div>
+      </div>
+    );
+  }
+
+  caloriesIntakeWidget = function () {
+    return (
+      <div className="widget">
+          <div className="panel-body center">
+            <h2 className="h1"> {this.state.caloriesIntake.calories} <span className="txt-small">{this.state.caloriesIntake.units}</span></h2>
+          </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="col-md-10">
           <div className="row widget-items">
-              <div className="col-md-4 steps">
-                  <div className="widget">
-                      <div className="panel-body center">
-                          <h2 className="h1">5000 <span className="txt-small">Steps</span></h2>
-                          <div className="c100 big p50">
-                              <span><img src="/images/icons/icon-steps.png" className="icon"/></span>
-                              <div className="slice">
-                                  <div className="bar"></div>
-                                  <div className="fill"></div>
-                              </div>
-                          </div>
-                          <p>To reach Goal - 5000 steps</p>
-                          <p>Miles: 500</p>
-                      </div>
-                  </div>
+              <div className="col-md-4">
+                <this.activityWidget/>
               </div>
-              <div className="col-md-4 calories">
-                  <div className="widget">
-                      <div className="panel-body center">
-                          <h2 className="h1">300 <span className="txt-small">Kcal Burned</span></h2>
-                          <div className="c100 big p50 orange">
-                              <span><img src="/images/icons/icon-calories.png" className="icon"/></span>
-                              <div className="slice">
-                                  <div className="bar"></div>
-                                  <div className="fill"></div>
-                              </div>
-                          </div>
-                          <p>To reach Goal - 5000 steps</p>
-                          <p>Miles: 500</p>
-                      </div>
-                  </div>
+              <div className="col-md-4">
+                <this.glucoseWidget/>
               </div>
-              <div className="col-md-4 food-intake">
-                  <div className="widget">
-                      <div className="panel-body center">
-                          <h2 className="h1">1300 <span className="txt-small">Kcal Intake</span></h2>
-                          <div className="c100 big p50 green">
-                              <span><img src="/images/icons/icon-food.png" className="icon"/></span>
-                              <div className="slice">
-                                  <div className="bar"></div>
-                                  <div className="fill"></div>
-                              </div>
-                          </div>
-                          <p>To reach Goal - 5000 steps</p>
-                          <p>Miles: 500</p>
-                      </div>
-                  </div>
+              <div className="col-md-4">
+                <this.caloriesBurnedWidget/>
               </div>
-              <div className="col-md-4 blood-Glucose">
-                  <div className="widget">
-                      <div className="panel-body center">
-                          <h2 className="h1">6.2 <span className="txt-small">mg/dl</span></h2>
-                          <img src="/images/icons/icon-glucose.png" className="icon big"/>
-                      </div>
-                  </div>
-              </div>
-              <div className="col-md-4 weight">
-                  <div className="widget">
-                      <div className="panel-body center">
-                          <h2 className="h1">75 <span className="txt-small">lbs</span></h2>
-                          <img src="/images/icons/icon-weight.png" className="icon"/>
-                      </div>
-                  </div>
+              <div className="col-md-4">
+                <this.caloriesIntakeWidget/>
               </div>
           </div>
       </div>

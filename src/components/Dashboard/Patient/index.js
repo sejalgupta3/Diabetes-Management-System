@@ -18,12 +18,15 @@ class PatientDashboard extends Component {
         <div className="row">
           <div className="side-nav col-md-2">
             <div className="list-group ">
-              <NavLink to="/dashboard/home" className="list-group-item" activeClassName="active">Home</NavLink>
+              <NavLink to="/dashboard/" className="list-group-item" activeClassName="active">Home</NavLink>
               <NavLink to="/dashboard/activities" className="list-group-item" activeClassName="active">Activities</NavLink>
+              <NavLink to="/dashboard/activities" className="list-group-item" activeClassName="active">Glucose</NavLink>
+              <NavLink to="/dashboard/activities" className="list-group-item" activeClassName="active">Medication</NavLink>
+              <NavLink to="/dashboard/activities" className="list-group-item" activeClassName="active">Calories Intake</NavLink>
             </div>
           </div>
           <Switch>
-            <Route path="/dashboard/home" exact component={Home}/>
+            <Route path="/dashboard" exact component={Home}/>
             <Route path="/dashboard/activities" component={Activities}/>
           </Switch>
        </div>

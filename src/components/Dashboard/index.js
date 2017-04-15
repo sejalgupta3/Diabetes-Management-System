@@ -9,7 +9,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.getUserSpecificDashboard = this.getUserSpecificDashboard.bind(this);
+  this.getUserType = this.getUserType.bind(this);
+  this.getUserSpecificDashboard = this.getUserSpecificDashboard.bind(this);
   }
 
   /*Function meant to fetch userType from API*/
@@ -17,7 +18,7 @@ class Dashboard extends Component {
     return 'patient';
   }
 
-  getUserSpecificDashboard = function(){
+  getUserSpecificDashboard = function() {
     if(this.getUserType() == 'patient'){
       return <PatientDashboard/>
     }else{
