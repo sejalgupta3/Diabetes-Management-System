@@ -95,3 +95,61 @@
     background-color: #f8f8f8;
     border-color: #e7e7e7;
 }
+
+.demo-content{
+        padding: 25px;
+        font-size: 18px;
+        min-height: 100px;
+        background: #D9EBFF;
+        margin: 10px;
+        border: 1px solid #999;
+  		border-radius:10px;
+  		box-shadow: 10px 10px 5px #888888;
+    }
+    .demo-content2{
+        padding: 25px;
+        font-size: 18px;
+        min-height: 500px;
+        background: #D9EBFF;
+        margin-left: 65px;
+        margin-top: 20px;
+        border: 1px solid #999;
+  		border-radius:10px;
+  		box-shadow: 10px 10px 5px #888888;
+    }
+    .demo-content.bg-alt{
+        background: #abb1b8;
+    }
+    /* CSS for Input Boxes (ib) */
+    .margins-ib{
+    	margin-top: 10px;
+    }
+    .padding-ib{
+    	padding: 10px	
+    }
+    .formDiv{
+  		border: 1px solid #999;
+  		border-radius:10px;
+    }
+    #input {
+    width: 400px;
+    margin-left: 30%; 
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+
+}
+
+.add-Background{
+	 background: #ffffff url("https://www.souqalmal.com/financial-education/ae-en/uploads/sites/8/2016/05/Doctor-holding-a-stethoscope-in-his-hands.jpg") no-repeat center ;
+	height:700px;
+}
+
+
+    	
