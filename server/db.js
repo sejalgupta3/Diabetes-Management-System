@@ -58,4 +58,17 @@ exports.addRecord = function( collection, data, callback ) {
           callback();
       }
   });
+},
+
+exports.findRecordNoFilter = function(collection,callback){
+	collection.find({}).toArray(function(err,documents){
+		if(err){
+			res.send(err);
+		}
+		else{
+			callback(documents);
+		}
+	});
 }
+
+
