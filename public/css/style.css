@@ -6,6 +6,16 @@
     vertical-align: middle;
 }
 
+.carousel-inner>.item>img {
+    min-width: 100%;
+    min-height: 500px;
+    /* <--- Change this line to min-height */
+}
+
+.container-fluid {
+    padding: 0;
+}
+
 
 /*Navbar*/
 
@@ -100,60 +110,163 @@ nav a {
     border-color: #e7e7e7;
 }
 
-.demo-content{
-        padding: 25px;
-        font-size: 18px;
-        min-height: 100px;
-        background: #D9EBFF;
-        margin: 10px;
-        border: 1px solid #999;
-  		border-radius:10px;
-  		box-shadow: 10px 10px 5px #888888;
-    }
-    .demo-content2{
-        padding: 25px;
-        font-size: 18px;
-        min-height: 500px;
-        background: #D9EBFF;
-        margin-left: 65px;
-        margin-top: 20px;
-        border: 1px solid #999;
-  		border-radius:10px;
-  		box-shadow: 10px 10px 5px #888888;
-    }
-    .demo-content.bg-alt{
-        background: #abb1b8;
-    }
-    /* CSS for Input Boxes (ib) */
-    .margins-ib{
-    	margin-top: 10px;
-    }
-    .padding-ib{
-    	padding: 10px	
-    }
-    .formDiv{
-  		border: 1px solid #999;
-  		border-radius:10px;
-    }
-    #input {
+.demo-content {
+    padding: 25px;
+    font-size: 18px;
+    min-height: 100px;
+    background: #D9EBFF;
+    margin: 10px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.demo-content2 {
+    padding: 25px;
+    font-size: 18px;
+    min-height: 500px;
+    background: #D9EBFF;
+    margin-left: 65px;
+    margin-top: 20px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.demo-content.bg-alt {
+    background: #abb1b8;
+}
+
+
+/* CSS for Input Boxes (ib) */
+
+.margins-ib {
+    margin-top: 10px;
+}
+
+.padding-ib {
+    padding: 10px
+}
+
+.formDiv {
+    border: 1px solid #999;
+    border-radius: 10px;
+}
+
+#input {
     width: 400px;
-    margin-left: 30%; 
+    margin-left: 30%;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     background-color: white;
     background-image: url('searchicon.png');
-    background-position: 10px 10px; 
+    background-position: 10px 10px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
-
 }
 
-.add-Background{
-	 background: #ffffff url("https://www.souqalmal.com/financial-education/ae-en/uploads/sites/8/2016/05/Doctor-holding-a-stethoscope-in-his-hands.jpg") no-repeat center ;
-	height:700px;
+.add-Background {
+    background: #ffffff url("https://www.souqalmal.com/financial-education/ae-en/uploads/sites/8/2016/05/Doctor-holding-a-stethoscope-in-his-hands.jpg") no-repeat center;
+    height: 700px;
 }
 
 
-    	
+/*Home Page*/
+
+
+/*html {
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0 none;
+    padding: 0;
+}
+
+.cloudIntroDiv {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/cloudBg.jpg") no-repeat fixed center center / cover;
+    height: 700px;
+}
+
+.multiDeviceSupportDiv {
+    background: url("../images/p1.jpg") no-repeat fixed center center / cover;
+    height: 600px;
+    color: #fff;
+}
+
+.cloudIntroDiv {
+    background: url("../images/banner.jpg") no-repeat fixed center center / cover;
+}
+
+.multiDeviceSupportDiv h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.cloudIntroDiv h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+}
+
+.cloudIntroDiv h4 {
+    text-transform: uppercase;
+    color: #fff;
+}
+
+nav {
+    background-color: #fff;
+}
+
+.formContainer {
+    margin-top: 5%;
+}
+
+.formContainer button {
+    width: 100%;
+}
+
+.material-icons {
+    vertical-align: middle;
+    margin-right: 3%;
+}
+
+.userDetails {
+    padding: 5%;
+}
+
+main {
+    padding-left: 240px;
+}
+
+#stationName {
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.stationButtons {
+    float: right
+}
+
+.stationButtons a {
+    font-size: 0.8em;
+}
+
+label {
+    color: black;
+    font-size: 1.3em;
+}
+
+.sensorTypeDiv p {
+    padding: 5%;
+    margin: 8%;
+    font-weight: 700;
+}
+
+
+}*/

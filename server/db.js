@@ -31,7 +31,8 @@ exports.close = function(done) {
 exports.getRecord = function( collection, filter ,callback ) {
   collection.findOne( filter, function(err, document) {
     if(err) {
-      res.send(err);
+      //res.send(err);
+      console.log(err);
     } else {
       callback(document);
     }
@@ -41,7 +42,8 @@ exports.getRecord = function( collection, filter ,callback ) {
 exports.updateRecord = function( collection, filter, options, callback ) {
   collection.update( filter, options, function(err){
     if (err) {
-        res.send(err);
+        console.log(err);
+        //res.send(err);
     } else {
       callback();
     }
@@ -53,7 +55,8 @@ exports.addRecord = function( collection, data, callback ) {
       w: 1
   }, function(err, records) {
       if (err) {
-          res.send(err);
+        console.log(err);
+          //res.send(err);
       } else {
           callback();
       }
@@ -63,12 +66,11 @@ exports.addRecord = function( collection, data, callback ) {
 exports.findRecordNoFilter = function(collection,callback){
 	collection.find({}).toArray(function(err,documents){
 		if(err){
-			res.send(err);
+      console.log(err);
+			//res.send(err);
 		}
 		else{
 			callback(documents);
 		}
 	});
 }
-
-

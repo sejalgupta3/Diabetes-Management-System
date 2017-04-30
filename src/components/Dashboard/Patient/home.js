@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Chart} from 'react-google-charts';
+import SolidGuage from '../../charts/solidGuage'
 
 class Home extends Component {
   constructor(props) {
@@ -10,10 +12,7 @@ class Home extends Component {
       caloriesIntake: '[]'
     };
 
-    this.activityWidget = this.activityWidget.bind(this);
-    this.glucoseWidget = this.glucoseWidget.bind(this);
-    this.caloriesBurnedWidget = this.caloriesBurnedWidget.bind(this);
-    this.caloriesIntakeWidget = this.caloriesIntakeWidget.bind(this);
+    this.WeightChart = this.WeightChart.bind(this);
   }
 
   componentWillMount = function(){
@@ -23,7 +22,7 @@ class Home extends Component {
     this.getLatestCaloriesIntakeWidget();
   }
 
-  makeGetRequest(url, callback){
+  makeGetRequest(url, callback) {
     var request = new Request(url, {
     	method: 'GET',
     	mode: 'cors',
@@ -64,61 +63,119 @@ class Home extends Component {
     }.bind(this));
   }
 
-  activityWidget = function () {
+  widget = function (props) {
     return (
-      <div className="widget">
+      <div className="widget panel panel-info">
+        <div className="panel-heading">{props.heading}</div>
           <div className="panel-body center">
-            <h2 className="h1"> {this.state.steps.steps} <span className="txt-small">Steps</span></h2>
+            <h2 className="h1">{props.value}<span className="txt-small"> {props.units}</span></h2>
+            {props.graph}
           </div>
       </div>
     );
   }
 
-  glucoseWidget = function () {
+  barChart = function(props) {
     return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.glucose.value} <span className="txt-small">{this.state.glucose.units}</span></h2>
-          </div>
-      </div>
-    );
+        <div className={'my-pretty-chart-container'}>
+          <Chart
+            chartType="PieChart"
+            data = {props.data}
+            options = {props.options}
+            graph_id={props.id}
+            width="100%"
+            legend_toggle
+          />
+        </div>
+      );
   }
 
-  caloriesBurnedWidget = function () {
+  WeightChart = function() {
     return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.caloriesBurned.calories} <span className="txt-small">{this.state.caloriesBurned.units}</span></h2>
-          </div>
-      </div>
-    );
-  }
-
-  caloriesIntakeWidget = function () {
-    return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.caloriesIntake.calories} <span className="txt-small">{this.state.caloriesIntake.units}</span></h2>
-          </div>
-      </div>
-    );
-  }
+        <div className={'my-pretty-chart-container'}>
+          <Chart
+            chartType="Gauge"
+            data = {[['Label', 'Value'], ['Weight', 80]]}
+            options = {{
+              legend: 'none',
+              redFrom: 80,
+              redTo: 100,
+              yellowFrom: 60,
+              yellowTo: 80,
+              minorTicks: 5,
+              is3D: true,
+            }}
+            graph_id="Gauge"
+            width="100%"
+            legend_toggle
+          />
+        </div>
+      );
+    }
 
   render() {
     return (
       <div className="col-md-10">
           <div className="row widget-items">
               <div className="col-md-4">
-                <this.activityWidget/>
+                <this.widget
+                  heading = "ACTIVITY"
+                  value = {this.state.steps.StepCount}
+                  units = "Steps"
+                  graph = {
+                    /*<this.barChart
+                      id="activity"
+                      data={[['Effort', 'Amount given'],['Steps Completed', 7000],['To Reach Goal', 3000]]}
+                      options={{
+                        pieSliceTextStyle: {
+                          color: 'black',
+                        },
+                        is3D: true,
+                        legend: 'none',
+                        slices: {
+                          0: { color: 'purple' },
+                          1: { color: '#f7f3e8' }
+                        }
+                      }}
+                    />*/
+                    <SolidGuage
+                      text = 'Steps'
+                      data= {[6000/8000*100]}
+                      units = 'steps'
+                      goal = '8000'
+                    />
+                  }
+                />
               </div>
               <div className="col-md-4">
-                <this.glucoseWidget/>
+                <this.widget
+                  heading="CALORIES BURNED"
+                  value={this.state.caloriesBurned.calories}
+                  units={this.state.caloriesBurned.units}
+                  graph = {
+                    <SolidGuage
+                      text = 'Calories'
+                      data = {[300/1000*100]}
+                      units = 'kcal'
+                      goal = '1000'
+                    />
+                  }
+                />
               </div>
-              <div className="col-md-4">
-                <this.caloriesBurnedWidget/>
-              </div>
-              <div className="col-md-4">
-                <this.caloriesIntakeWidget/>
+              <div className="col-md-4" >
+                <this.widget
+                  heading="CALORIES INTAKE"
+                  value={this.state.caloriesIntake.calories}
+                  units={this.state.caloriesIntake.units}
+                  graph = {
+                    <SolidGuage
+                      text = 'Calories'
+                      data = {[100/3000*100]}
+                      units = 'kcal'
+                      goal = '3000'
+                    />
+                  }
+                />
               </div>
           </div>
       </div>
