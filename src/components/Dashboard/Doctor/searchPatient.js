@@ -9,7 +9,7 @@ class searchPatient extends Component {
 	         testing: "[]"
 	 		};
 	 }
-	 
+
 	 componentWillMount = function(){
 	 	this.getPatientList();
 	}
@@ -40,18 +40,16 @@ class searchPatient extends Component {
 	 }	
 	 
 	 handleClick = (id) => {
-		   
 		    var val = document.getElementById("input").value;
-		    console.log('this is:', this + id );
-		    window.location = '/dashboard/patientDetails/' + val ;
+		    var arr= val.split(" ");
+		    window.location = '/dashboard/patientDetails/' + arr[0] ;
 		  }
 	 
 	render() {
 		var rows= [];
 		var datalisttable = JSON.parse(this.state.testing);
-		console.log("Data is cominggg" + datalisttable);
 		for(var i in datalisttable)
-		{	var id = datalisttable[i].fname 
+		{	var id = datalisttable[i].fname + " " + datalisttable[i].lname
 			rows.push(<option value={id}></option>)  ;
 			console.log(id);
 		}
@@ -61,10 +59,11 @@ class searchPatient extends Component {
     	    <h1>Search Patient</h1> 
     	  </div>
     	<div className="add-Background" >
-	    	<input list="browsers" onInput={this.handleClick} id='input' placeholder="Search Patient.."></input>
+	    	<input list="browsers" id='input' placeholder="Search Patient.."></input>
 	    	<datalist id="browsers">
 	    	  {rows}
 	    	</datalist>
+	    	<button type="button" className="btn btn-primary btn-lg" onClick={this.handleClick}> Enter </button>
     	</div>
     	</div>  
 		   

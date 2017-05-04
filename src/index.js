@@ -5,11 +5,13 @@ import {
   Route
 } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
+import LoginCheck from './components/LoginCheck';
 
 ReactDOM.render((
    <BrowserRouter>
      <div>
        <Route path="/dashboard" component={Dashboard}/>
-     </div>
+       <Route path="/login" component={LoginCheck}/>
+       </div>
    </BrowserRouter >
 ), document.getElementById( 'root' ) )

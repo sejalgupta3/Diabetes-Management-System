@@ -60,6 +60,18 @@ exports.addRecord = function( collection, data, callback ) {
   });
 },
 
+exports.removeRecordNoFilter = function(collection,filter,callback){
+	collection.remove(filter,function(err){
+		if(err){
+			res.send(err);
+		}
+		else {
+		      callback();
+		    }
+	});
+};
+
+
 exports.findRecordNoFilter = function(collection,callback){
 	collection.find({}).toArray(function(err,documents){
 		if(err){
@@ -70,5 +82,6 @@ exports.findRecordNoFilter = function(collection,callback){
 		}
 	});
 }
+
 
 

@@ -3,7 +3,7 @@ import Header from './header';
 import Footer from './footer';
 import PatientDashboard from './Patient/index';
 import DoctorDashboard from './Doctor/index';
-
+import Login from  './Login/LoginCheck';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -15,9 +15,10 @@ class Dashboard extends Component {
 
   /*Function meant to fetch userType from API*/
   getUserType = function(){
-    return 'patient';
+    return 'doctor';
   }
 
+  
   getUserSpecificDashboard = function() {
     if(this.getUserType() == 'patient'){
       return <PatientDashboard/>
@@ -25,6 +26,7 @@ class Dashboard extends Component {
       return <DoctorDashboard/>
     }
   }
+  
 
   render() {
     return (
