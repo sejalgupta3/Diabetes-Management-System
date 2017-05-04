@@ -92,7 +92,7 @@ class Glucose extends Component {
 
   render() {
     return (
-      <div className="col-md-10">
+      <div>
         <div className="row widget-items">
           <Line data={this.state.dataArr} categories={this.state.datesArr}/>
         </div>

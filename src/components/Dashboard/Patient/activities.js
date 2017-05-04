@@ -74,7 +74,7 @@ class Activities extends Component {
 
   render() {
     return (
-      <div className="col-md-10">
+      <div>
         <div className="row widget-items">
           <this.activityGraph/>
         </div>

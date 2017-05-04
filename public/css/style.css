@@ -41,7 +41,7 @@ nav a {
 }
 
 .side-content {
-    padding: 0 30px;
+    padding: 0 60px;
 }
 
 .side-nav .list-group-item {
@@ -103,6 +103,11 @@ nav a {
     float: none;
     text-align: center;
     margin: 0 auto 20px;
+}
+
+.widget img {
+    max-width: 60%;
+    margin: 0 auto;
 }
 
 

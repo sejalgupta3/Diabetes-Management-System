@@ -154,7 +154,7 @@ class Calories extends Component {
 
   render() {
     return (
-      <div className="col-md-10">
+      <div>
         <div className="row widget-items">
           <Area caloriesIntake={this.state.caloriesIntake} caloriesBurned={this.state.caloriesBurned} dates={this.state.dates}/>
         </div>

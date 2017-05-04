@@ -95,6 +95,7 @@ class Home extends Component {
           <div className="panel-body center">
             <h2 className="h1">{props.value}<span className="txt-small"> {props.units}</span></h2>
             {props.graph}
+            {props.image}
           </div>
       </div>
     );
@@ -171,7 +172,7 @@ class Home extends Component {
               }
             />
           </div>
-          <div className="col-md-4" >
+          <div className="col-md-4">
             <this.widget
               heading="CALORIES INTAKE"
               value={this.state.caloriesIntake.calories}
@@ -184,6 +185,37 @@ class Home extends Component {
                   goal = '3000'
                 />
               }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="GLUCOSE"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/glucose.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="BLOOD PRESSURE"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="HEIGHT"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="WEIGHT"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
             />
           </div>
           <div className="col-md-4" >
