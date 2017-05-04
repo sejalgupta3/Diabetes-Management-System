@@ -19,7 +19,7 @@ class Column extends Component {
     yAxis: {
         min: 0,
         title: {
-            text: 'Step Counts'
+            text: 'Y-Axis'
         }
     },
     tooltip: {
@@ -37,7 +37,7 @@ class Column extends Component {
         }
     },
     series: [{
-        name: 'Step Count',
+        name: 'Steps',
         data: this.props.data
     }]
         }}

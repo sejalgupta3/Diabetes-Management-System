@@ -9,7 +9,8 @@ class Home extends Component {
       steps: '[]',
       glucose: '[]',
       caloriesBurned: '[]',
-      caloriesIntake: '[]'
+      caloriesIntake: '[]',
+      predictedGlucose: '[]'
     };
 
     this.WeightChart = this.WeightChart.bind(this);
@@ -20,6 +21,7 @@ class Home extends Component {
     this.getLatestGlucose();
     this.getLatestCaloriesBurned();
     this.getLatestCaloriesIntakeWidget();
+    //this.getPredictedGlucose();
   }
 
   makeGetRequest(url, callback) {
@@ -38,6 +40,23 @@ class Home extends Component {
       callback(j);
     });
   }
+
+  makePostRequest(url, params, callback) {
+     var request = new Request(url, {
+       method: 'POST',
+       body: JSON.stringify({
+         bmi: params
+       }),
+       mode: 'cors',
+       redirect: 'follow'
+     });
+
+     fetch(request).then(function(response) {
+       return response.json();
+     }).then(function(j) {
+       callback(j);
+     });
+ }
 
   getLatestSteps = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestActivity', function(json){
@@ -60,6 +79,12 @@ class Home extends Component {
   getLatestCaloriesIntakeWidget = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestCaloriesIntake', function(json){
       this.setState({'caloriesIntake':json})
+    }.bind(this));
+  }
+
+  getPredictedGlucose = function() {
+    this.makePostRequest('http://10.250.4.104:8000', 19.6 ,function(data){
+      this.setState({'predictedGlucose':data.value[0]})
     }.bind(this));
   }
 
@@ -115,68 +140,57 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="col-md-10">
-          <div className="row widget-items">
-              <div className="col-md-4">
-                <this.widget
-                  heading = "ACTIVITY"
-                  value = {this.state.steps.StepCount}
-                  units = "Steps"
-                  graph = {
-                    /*<this.barChart
-                      id="activity"
-                      data={[['Effort', 'Amount given'],['Steps Completed', 7000],['To Reach Goal', 3000]]}
-                      options={{
-                        pieSliceTextStyle: {
-                          color: 'black',
-                        },
-                        is3D: true,
-                        legend: 'none',
-                        slices: {
-                          0: { color: 'purple' },
-                          1: { color: '#f7f3e8' }
-                        }
-                      }}
-                    />*/
-                    <SolidGuage
-                      text = 'Steps'
-                      data= {[6000/8000*100]}
-                      units = 'steps'
-                      goal = '8000'
-                    />
-                  }
+      <div className="row widget-items">
+          <div className="col-md-4">
+            <this.widget
+              heading = "ACTIVITY"
+              value = {this.state.steps.StepCount}
+              units = "Steps"
+              graph = {
+                <SolidGuage
+                  text = 'Steps'
+                  data= {[6000/8000*100]}
+                  units = 'steps'
+                  goal = '8000'
                 />
-              </div>
-              <div className="col-md-4">
-                <this.widget
-                  heading="CALORIES BURNED"
-                  value={this.state.caloriesBurned.calories}
-                  units={this.state.caloriesBurned.units}
-                  graph = {
-                    <SolidGuage
-                      text = 'Calories'
-                      data = {[300/1000*100]}
-                      units = 'kcal'
-                      goal = '1000'
-                    />
-                  }
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="CALORIES BURNED"
+              value={this.state.caloriesBurned.calories}
+              units={this.state.caloriesBurned.units}
+              graph = {
+                <SolidGuage
+                  text = 'Calories'
+                  data = {[300/1000*100]}
+                  units = 'kcal'
+                  goal = '1000'
                 />
-              </div>
-              <div className="col-md-4" >
-                <this.widget
-                  heading="CALORIES INTAKE"
-                  value={this.state.caloriesIntake.calories}
-                  units={this.state.caloriesIntake.units}
-                  graph = {
-                    <SolidGuage
-                      text = 'Calories'
-                      data = {[100/3000*100]}
-                      units = 'kcal'
-                      goal = '3000'
-                    />
-                  }
+              }
+            />
+          </div>
+          <div className="col-md-4" >
+            <this.widget
+              heading="CALORIES INTAKE"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
+              graph = {
+                <SolidGuage
+                  text = 'Calories'
+                  data = {[100/3000*100]}
+                  units = 'kcal'
+                  goal = '3000'
                 />
-              </div>
+              }
+            />
+          </div>
+          <div className="col-md-4" >
+            <this.widget
+              heading="Predicted Glucose Value"
+              value={this.state.predictedGlucose}
+            />
           </div>
       </div>
     );

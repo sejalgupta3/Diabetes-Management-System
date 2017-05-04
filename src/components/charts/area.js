@@ -11,24 +11,7 @@ class Area extends Component {
                spacingBottom: 30
            },
            title: {
-               text: 'Fruit consumption *'
-           },
-           subtitle: {
-               text: '* Jane\'s banana consumption is unknown',
-               floating: true,
-               align: 'right',
-               verticalAlign: 'bottom',
-               y: 15
-           },
-           legend: {
-               layout: 'vertical',
-               align: 'left',
-               verticalAlign: 'top',
-               x: 150,
-               y: 100,
-               floating: true,
-               borderWidth: 1,
-               backgroundColor: '#FFFFFF'
+               text: 'Glucose Records'
            },
            xAxis: {
                categories: this.props.dates

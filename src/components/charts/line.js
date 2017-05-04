@@ -10,17 +10,14 @@ class Line extends Component {
               type: 'line'
           },
           title: {
-              text: 'Monthly Average Temperature'
-          },
-          subtitle: {
-              text: 'Source: WorldClimate.com'
+              text: 'Glucose Records'
           },
           xAxis: {
               categories: this.props.categories
           },
           yAxis: {
               title: {
-                  text: 'Temperature (°C)'
+                  text: 'Y-Axis'
               }
           },
           plotOptions: {
@@ -32,7 +29,7 @@ class Line extends Component {
               }
           },
           series: [{
-              name: 'Tokyo',
+              name: 'Glucose',
               data: this.props.data,
               color: 'rgb(247, 163, 92)'
           }]

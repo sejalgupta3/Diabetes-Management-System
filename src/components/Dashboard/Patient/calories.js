@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Area from '../../charts/area'
 
+
 class Calories extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +10,8 @@ class Calories extends Component {
       caloriesIntake: '[]',
       caloriesBurnedJson: '{}',
       caloriesIntakeJson: '{}',
-      dates: '[]'
+      dates: '[]',
+      caloriesTableBody: '[]'
     };
   }
 
@@ -125,6 +127,29 @@ class Calories extends Component {
       this.setState({caloriesBurned:caloriesBurnedArr});
       this.setState({dates:stringArr});
     }
+
+    var tableRows = [];
+
+    for(var j in stringArr){
+      tableRows.push(
+        (
+        <tr>
+          <td>{parseInt(j)+1}</td>
+          <td>{stringArr[j]}</td>
+          <td>{caloriesIntakeArr[j]}</td>
+          <td>{caloriesBurnedArr[j]}</td>
+        </tr>
+      ));
+    }
+
+    var caloriesTableBodyHtml = (
+      <tbody>
+        {tableRows}
+      </tbody>
+    );
+
+    console.log(caloriesTableBodyHtml);
+    this.setState({caloriesTableBody:caloriesTableBodyHtml});
   }
 
   render() {
@@ -132,6 +157,19 @@ class Calories extends Component {
       <div className="col-md-10">
         <div className="row widget-items">
           <Area caloriesIntake={this.state.caloriesIntake} caloriesBurned={this.state.caloriesBurned} dates={this.state.dates}/>
+        </div>
+        <div className="row widget-items">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Calories Intake</th>
+                <th>Calories Consumed</th>
+              </tr>
+            </thead>
+            {this.state.caloriesTableBody}
+          </table>
         </div>
       </div>
     );

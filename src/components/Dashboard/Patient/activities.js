@@ -10,6 +10,7 @@ class Activities extends Component {
       data: '[]',
       activityTableBody: ''
     };
+    this.activityGraph = this.activityGraph.bind(this);
   }
 
   componentWillMount = function() {
@@ -23,13 +24,13 @@ class Activities extends Component {
       var tableRows = [];
       for( var dateIndex in json.activity) {
         var date = new Date(json.activity[dateIndex].Date);
-        c.push(date.getFullYear()+'-' + (date.getMonth()+1)+'-'+date.getDate());
+        c.push(date.getMonth()+'-'+date.getDate()+'-'+date.getFullYear());
         d.push(json.activity[dateIndex].StepCount);
         tableRows.push(
           (
           <tr>
             <td>{parseInt(dateIndex)+1}</td>
-            <td>{date.getFullYear()+'-' + (date.getMonth()+1)+'-'+date.getDate()}</td>
+            <td>{date.getMonth()+'-'+date.getDate()+'-' + date.getFullYear()}</td>
             <td>{json.activity[dateIndex].WalkingRunningDistance}</td>
             <td>{json.activity[dateIndex].StepCount}</td>
           </tr>
@@ -50,12 +51,12 @@ class Activities extends Component {
 
   makeGetRequest(url, callback) {
     var request = new Request(url, {
-    	method: 'GET',
-    	mode: 'cors',
-    	redirect: 'follow',
-    	headers: new Headers({
-    		'Content-Type': 'application/json'
-    	})
+      method: 'GET',
+      mode: 'cors',
+      redirect: 'follow',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
     });
 
     fetch(request).then(function(response) {
@@ -65,11 +66,17 @@ class Activities extends Component {
     });
   }
 
+  activityGraph = function() {
+    return (
+      <Column data={this.state.data} categories={this.state.categories}/>
+    );
+  }
+
   render() {
     return (
       <div className="col-md-10">
         <div className="row widget-items">
-          <Column data={this.state.data} categories={this.state.categories}/>
+          <this.activityGraph/>
         </div>
         <div className="row widget-items">
           <table className="table table-striped">

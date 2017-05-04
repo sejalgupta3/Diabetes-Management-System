@@ -18,7 +18,7 @@ class PatientDashboard extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="row">
+        <div className="container root">
           <div className="side-nav col-md-2">
             <div className="list-group ">
               <NavLink to="/dashboard" className="list-group-item">Home</NavLink>
@@ -28,13 +28,15 @@ class PatientDashboard extends Component {
               <NavLink to="/medication" className="list-group-item">Medication</NavLink>
             </div>
           </div>
-          <Switch>
-            <Route path="/dashboard" exact component={Home}/>
-            <Route path="/activities" component={Activities}/>
-            <Route path="/calories" exact component={Calories}/>
-            <Route path="/glucose" component={Glucose}/>
-            <Route path="/medication" component={Medication}/>
-          </Switch>
+          <div className="col-md-10 side-content">
+            <Switch>
+              <Route path="/dashboard" exact component={Home}/>
+              <Route path="/activities" component={Activities}/>
+              <Route path="/calories" exact component={Calories}/>
+              <Route path="/glucose" component={Glucose}/>
+              <Route path="/medication" component={Medication}/>
+            </Switch>
+          </div>
        </div>
      </BrowserRouter>
     );

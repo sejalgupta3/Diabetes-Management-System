@@ -27,8 +27,22 @@ nav a {
     color: #fff;
 }
 
+.root.container {
+    width: 100%;
+    padding: 0;
+}
+
 
 /*Side Bar Nav*/
+
+.side-nav {
+    padding-left: 30px;
+    padding-right: 0;
+}
+
+.side-content {
+    padding: 0 30px;
+}
 
 .side-nav .list-group-item {
     background-color: #cbe3ed;
@@ -88,7 +102,7 @@ nav a {
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     float: none;
     text-align: center;
-    margin: 20px auto;
+    margin: 0 auto 20px;
 }
 
 
@@ -270,3 +284,7 @@ label {
 
 
 }*/
+
+
+}
+*/
