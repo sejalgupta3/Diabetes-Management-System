@@ -30,15 +30,19 @@ class PatientDemographics extends Component {
 
 		 componentWillMount = function(){
 			 var name =  this.props.match.params.name;
-
-		 	this.getPatientList(name);
+		 	 this.getPatientList(name);
 		}
-
+		 
+		 showMedications = () => {
+			 
+			    window.location = '/dashboard/patientMedications/' + this.state.patientId ;
+			  }
+		 
 		 makePostRequest(url,params, callback){
 			    var request = new Request(url, {
 			    	method: 'POST',
 			    	body: JSON.stringify({
-			    		data: params
+			    		data: params	
 			    	}),
 			    	mode: 'cors',
 			    	redirect: 'follow',
@@ -53,7 +57,7 @@ class PatientDemographics extends Component {
 			      callback(j);
 			    });
 			  }
-
+		 
 		 getPatientList = function(name) {
 			this.makePostRequest('http://localhost:9000/doctor/searchPatientById', name ,function(json){
 				 console.log("Response is " + name + JSON.stringify(json));
@@ -79,21 +83,18 @@ class PatientDemographics extends Component {
 				this.setState({'provider':json.provider})
 				this.setState({'referprovider':json.ReferringProvider})
 			    }.bind(this));
-		 }
+		 }	
 
-
-	render() {
+render() {
     return (
-
-    		<div class="container">
-    		{this.props.name}
-    		{this.props.match.params.name}
-    		{this.props.location.pathname}
+    	
+    		 <div className="container">
+    		<div className="jumbotron">
+    	    <h1>Patient Demographics</h1> 
+    	  </div>
+    		
             <div className="row demo-content">
-                <div className="form-inline col-md-4">
-      				<label for="usrid">Patient ID:</label>
-      				<input type="text" className="form-control" id="usrid" value=	{this.state.patientId}/>
-    			</div>
+                
                 <div className="col-md-12 margins-ib">
     				<div className="form-inline">
     					<div className="form-group">
@@ -109,37 +110,37 @@ class PatientDemographics extends Component {
       						<input type="text" className="form-control" id="ln" value=	{this.state.lastname}/>
     					</div>
     				</div>
-    			</div>
-    			<div className="form-inline margins-ib">
-    				<div className="form-group padding-ib">
-      					<label for="fn">Alias Name:</label>
-      					<input type="text" className="form-control" id="fn"/>
-    				</div>
-    			</div>
-
+    			</div> 				
     			<div className="form-inline">
     				<div className="form-group padding-ib">
     					<label for="gender">Gender:</label>
       					<label className="radio-inline"><input type="radio" name="optradio" checked="checked"/> Male</label>
     					<label className="radio-inline"><input type="radio" name="optradio"/> Female</label>
-    					<label className="radio-inline"><input type="radio" name="optradio"/> Other</label>
+    					<label className="radio-inline"><input type="radio" name="optradio"/> Other</label>			
     				</div>
+    				<div className="form-group ">
+						<label for="dob">D.O.B:</label>
+						<input type="date" className="form-control" id="dob"/>
+					</div>
+						<div className="form-group padding-ib">
+  						<label for="age">Age:</label>
+  						<input type="number" className="form-control" id="age" value={this.state.age} />
+					</div>	
     			</div>
-
-    			<div className="col-md-12">
+    			
+    			
+    			<div className="col-md-6">
     				<div className="form-inline">
-    					<div className="form-group ">
-      						<label for="dob">D.O.B:</label>
-      						<input type="date" className="form-control" id="dob"/>
-    					</div>
-    					<div className="form-group padding-ib">
-      						<label for="age">Age:</label>
-      						<input type="number" className="form-control" id="age" value={this.state.age} />
-    					</div>
-    				</div>
-    			</div>
+    					<button type="button" className="btn btn-primary" onClick={this.showMedications}>View Medications</button>
+                   </div>
+    			</div>	
+    			<div className="col-md-6">
+					<div className="form-inline">
+						<button type="button" className="btn btn-warning">View Patient Status</button>	
+					</div>
+				</div>	
            	</div>
-
+           	
       		<div className="form-inline col-md-5 demo-content2">
       			<div className="form-inline padding-ib">
       				<label for="ssn">SSN:</label>
@@ -188,8 +189,7 @@ class PatientDemographics extends Component {
       			<div className="form-inline padding-ib">
       				<label for="mrn">Medical Rec. No.:</label>
       				<input type="number" className="form-control" id="mrn" value={this.state.mrn}/>
-      			</div>
-
+      			</div>	
       		</div>
       		<div className="form-inline col-md-5 demo-content2">
       			<div className="form-inline padding-ib">
@@ -201,7 +201,7 @@ class PatientDemographics extends Component {
       				<input type="text" className="form-control" id="provider" value={this.state.provider} />
       			</div>
       			<div className="form-inline padding-ib">
-      				<label for="refphy">Referring Physician:</label>
+      				<label for="refphy">Referring Physician:</label> 
       				<input type="text" className="form-control" id="refphy" value={this.state.referprovider} />
       			</div>
       			<div className="form-inline padding-ib">
@@ -215,8 +215,10 @@ class PatientDemographics extends Component {
       			<div className="form-inline padding-ib">
       				<label for="notes">Notes:</label>
       				<textarea className="form-control" rows="15" cols="50" id="textarea" ></textarea>
-      			</div>
-      		</div>
+      			</div>			
+      		</div>  
+      		
+      		
         </div>
     );
   }

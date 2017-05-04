@@ -6,30 +6,11 @@
     vertical-align: middle;
 }
 
-.carousel-inner>.item>img {
-    min-width: 100%;
-    min-height: 500px;
-    /* <--- Change this line to min-height */
-}
-
-.container-fluid {
-    padding: 0;
-}
-
-
-/*Navbar*/
-
-nav {
-    background-color: #046389;
-}
-
-nav a {
-    color: #fff;
-}
-
-.root.container {
+.homePage {
     width: 100%;
-    padding: 0;
+    height: 768px;
+    background-image: url("http://metabariatrics.com/images/slider.jpg");
+    background-size: cover;
 }
 
 
@@ -45,12 +26,12 @@ nav a {
 }
 
 .side-nav .list-group-item {
-    background-color: #cbe3ed;
-    color: #046389;
+    background-color: #c4e3ef;
+    color: #1997c6;
 }
 
 .side-nav a.list-group-item:hover, .side-nav a.list-group-item:focus {
-    background: #98c1d3;
+    background: #c4e3ef;
     color: #0e6d91;
 }
 
@@ -71,9 +52,16 @@ nav a {
         border: 0;
     }
     .side-nav .list-group-item.active, .side-nav .list-group-item.active:focus, .side-nav .list-group-item.active:hover {
-        background-color: #046389;
+        background-color: #1997c6;
         color: #fff;
     }
+}
+
+
+/*Panles*/
+
+.panel-heading {
+    background-color: #c2e8e8 !important;
 }
 
 
@@ -81,7 +69,7 @@ nav a {
 
 .widget-items .h1 {
     font-size: 55px;
-    font-weight: 400;
+    font-weight: lighter;
 }
 
 .widget-items .h1 span {
@@ -102,7 +90,7 @@ nav a {
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     float: none;
     text-align: center;
-    margin: 0 auto 20px;
+    margin: 20px auto;
 }
 
 .widget img {
@@ -192,104 +180,111 @@ nav a {
 }
 
 
-/*Home Page*/
+/*    --------------------------------------------------
+    :: Login Section
+	-------------------------------------------------- */
 
-
-/*html {
-    font-family: Roboto, sans-serif;
+#login {
+    padding-top: 50px
 }
 
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    border: 0 none;
-    padding: 0;
+#login .form-wrap {
+    width: 30%;
+    margin: 0 auto;
 }
 
-.cloudIntroDiv {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/cloudBg.jpg") no-repeat fixed center center / cover;
-    height: 700px;
-}
-
-.multiDeviceSupportDiv {
-    background: url("../images/p1.jpg") no-repeat fixed center center / cover;
-    height: 600px;
-    color: #fff;
-}
-
-.cloudIntroDiv {
-    background: url("../images/banner.jpg") no-repeat fixed center center / cover;
-}
-
-.multiDeviceSupportDiv h1 {
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.cloudIntroDiv h1 {
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #fff;
-}
-
-.cloudIntroDiv h4 {
-    text-transform: uppercase;
-    color: #fff;
-}
-
-nav {
-    background-color: #fff;
-}
-
-.formContainer {
-    margin-top: 5%;
-}
-
-.formContainer button {
-    width: 100%;
-}
-
-.material-icons {
-    vertical-align: middle;
-    margin-right: 3%;
-}
-
-.userDetails {
-    padding: 5%;
-}
-
-main {
-    padding-left: 240px;
-}
-
-#stationName {
-    text-transform: capitalize;
+#login h1 {
+    color: #000000;
+    font-size: 18px;
+    text-align: center;
     font-weight: bold;
+    padding-bottom: 20px;
 }
 
-.stationButtons {
-    float: right
+#login .form-group {
+    margin-bottom: 25px;
 }
 
-.stationButtons a {
-    font-size: 0.8em;
+#login .checkbox {
+    margin-bottom: 20px;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
-label {
-    color: black;
-    font-size: 1.3em;
+#login .checkbox.show:before {
+    content: '\e013';
+    color: #1fa67b;
+    font-size: 17px;
+    margin: 1px 0 0 3px;
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Glyphicons Halflings';
 }
 
-.sensorTypeDiv p {
-    padding: 5%;
-    margin: 8%;
-    font-weight: 700;
+#login .checkbox .character-checkbox {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+#login .checkbox .label {
+    color: #6d6d6d;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+#login .btn.btn-custom {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+#login .forget {
+    font-size: 13px;
+    text-align: center;
+    display: block;
 }
 
 
-}*/
+/*    --------------------------------------------------
+	:: Inputs & Buttons
+	-------------------------------------------------- */
 
-
+.form-control {
+    color: #212121;
 }
-*/
+
+.btn-custom {
+    color: #fff;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.btn-custom:hover, .btn-custom:focus {
+    color: #fff;
+}
+
+
+/*    --------------------------------------------------
+    :: Footer
+	-------------------------------------------------- */
+
+#footer {
+    color: #6d6d6d;
+    font-size: 12px;
+    text-align: center;
+}
+
+#footer p {
+    margin-bottom: 0;
+}
+
+#footer a {
+    color: inherit;
+}

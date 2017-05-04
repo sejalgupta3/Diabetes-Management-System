@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Chart} from 'react-google-charts';
 import SolidGuage from '../../charts/solidGuage'
 
 class Home extends Component {
@@ -100,44 +99,6 @@ class Home extends Component {
       </div>
     );
   }
-
-  barChart = function(props) {
-    return (
-        <div className={'my-pretty-chart-container'}>
-          <Chart
-            chartType="PieChart"
-            data = {props.data}
-            options = {props.options}
-            graph_id={props.id}
-            width="100%"
-            legend_toggle
-          />
-        </div>
-      );
-  }
-
-  WeightChart = function() {
-    return (
-        <div className={'my-pretty-chart-container'}>
-          <Chart
-            chartType="Gauge"
-            data = {[['Label', 'Value'], ['Weight', 80]]}
-            options = {{
-              legend: 'none',
-              redFrom: 80,
-              redTo: 100,
-              yellowFrom: 60,
-              yellowTo: 80,
-              minorTicks: 5,
-              is3D: true,
-            }}
-            graph_id="Gauge"
-            width="100%"
-            legend_toggle
-          />
-        </div>
-      );
-    }
 
   render() {
     return (
