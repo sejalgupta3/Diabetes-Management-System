@@ -32,9 +32,9 @@ class Dashboard extends Component {
     return (
       <div>
         <Header/>
-          <div className="container">
-            <this.getUserSpecificDashboard/>
-          </div>
+       
+        <this.getUserSpecificDashboard/>
+  
         <Footer/>
       </div>
     );

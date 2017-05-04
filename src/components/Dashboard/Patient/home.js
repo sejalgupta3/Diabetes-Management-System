@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SolidGuage from '../../charts/solidGuage'
 
 class Home extends Component {
   constructor(props) {
@@ -7,13 +8,11 @@ class Home extends Component {
       steps: '[]',
       glucose: '[]',
       caloriesBurned: '[]',
-      caloriesIntake: '[]'
+      caloriesIntake: '[]',
+      predictedGlucose: '[]'
     };
 
-    this.activityWidget = this.activityWidget.bind(this);
-    this.glucoseWidget = this.glucoseWidget.bind(this);
-    this.caloriesBurnedWidget = this.caloriesBurnedWidget.bind(this);
-    this.caloriesIntakeWidget = this.caloriesIntakeWidget.bind(this);
+    this.WeightChart = this.WeightChart.bind(this);
   }
 
   componentWillMount = function(){
@@ -21,9 +20,10 @@ class Home extends Component {
     this.getLatestGlucose();
     this.getLatestCaloriesBurned();
     this.getLatestCaloriesIntakeWidget();
+    //this.getPredictedGlucose();
   }
 
-  makeGetRequest(url, callback){
+  makeGetRequest(url, callback) {
     var request = new Request(url, {
     	method: 'GET',
     	mode: 'cors',
@@ -39,6 +39,23 @@ class Home extends Component {
       callback(j);
     });
   }
+
+  makePostRequest(url, params, callback) {
+     var request = new Request(url, {
+       method: 'POST',
+       body: JSON.stringify({
+         bmi: params
+       }),
+       mode: 'cors',
+       redirect: 'follow'
+     });
+
+     fetch(request).then(function(response) {
+       return response.json();
+     }).then(function(j) {
+       callback(j);
+     });
+ }
 
   getLatestSteps = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestActivity', function(json){
@@ -64,41 +81,19 @@ class Home extends Component {
     }.bind(this));
   }
 
-  activityWidget = function () {
-    return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.steps.steps} <span className="txt-small">Steps</span></h2>
-          </div>
-      </div>
-    );
+  getPredictedGlucose = function() {
+    this.makePostRequest('http://10.250.4.104:8000', 19.6 ,function(data){
+      this.setState({'predictedGlucose':data.value[0]})
+    }.bind(this));
   }
 
-  glucoseWidget = function () {
+  widget = function (props) {
     return (
-      <div className="widget">
+      <div className="widget panel panel-info">
+        <div className="panel-heading">{props.heading}</div>
           <div className="panel-body center">
-            <h2 className="h1"> {this.state.glucose.value} <span className="txt-small">{this.state.glucose.units}</span></h2>
-          </div>
-      </div>
-    );
-  }
-
-  caloriesBurnedWidget = function () {
-    return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.caloriesBurned.calories} <span className="txt-small">{this.state.caloriesBurned.units}</span></h2>
-          </div>
-      </div>
-    );
-  }
-
-  caloriesIntakeWidget = function () {
-    return (
-      <div className="widget">
-          <div className="panel-body center">
-            <h2 className="h1"> {this.state.caloriesIntake.calories} <span className="txt-small">{this.state.caloriesIntake.units}</span></h2>
+            <h2 className="h1">{props.value}<span className="txt-small"> {props.units}</span></h2>
+            {props.graph}
           </div>
       </div>
     );
@@ -106,20 +101,57 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="col-md-10">
-          <div className="row widget-items">
-              <div className="col-md-4">
-                <this.activityWidget/>
-              </div>
-              <div className="col-md-4">
-                <this.glucoseWidget/>
-              </div>
-              <div className="col-md-4">
-                <this.caloriesBurnedWidget/>
-              </div>
-              <div className="col-md-4">
-                <this.caloriesIntakeWidget/>
-              </div>
+      <div className="row widget-items">
+          <div className="col-md-4">
+            <this.widget
+              heading = "ACTIVITY"
+              value = {this.state.steps.StepCount}
+              units = "Steps"
+              graph = {
+                <SolidGuage
+                  text = 'Steps'
+                  data= {[6000/8000*100]}
+                  units = 'steps'
+                  goal = '8000'
+                />
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="CALORIES BURNED"
+              value={this.state.caloriesBurned.calories}
+              units={this.state.caloriesBurned.units}
+              graph = {
+                <SolidGuage
+                  text = 'Calories'
+                  data = {[300/1000*100]}
+                  units = 'kcal'
+                  goal = '1000'
+                />
+              }
+            />
+          </div>
+          <div className="col-md-4" >
+            <this.widget
+              heading="CALORIES INTAKE"
+              value={this.state.caloriesIntake.calories}
+              units={this.state.caloriesIntake.units}
+              graph = {
+                <SolidGuage
+                  text = 'Calories'
+                  data = {[100/3000*100]}
+                  units = 'kcal'
+                  goal = '3000'
+                />
+              }
+            />
+          </div>
+          <div className="col-md-4" >
+            <this.widget
+              heading="Predicted Glucose Value"
+              value={this.state.predictedGlucose}
+            />
           </div>
       </div>
     );

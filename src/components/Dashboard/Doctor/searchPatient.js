@@ -54,7 +54,7 @@ class searchPatient extends Component {
 			console.log(id);
 		}
     return (
-    	<div>	
+    		 <div className="container">
     	  <div className="jumbotron">
     	    <h1>Search Patient</h1> 
     	  </div>

@@ -88,7 +88,7 @@ class PatientDemographics extends Component {
 render() {
     return (
     	
-    		<div class="container">
+    		 <div className="container">
     		<div className="jumbotron">
     	    <h1>Patient Demographics</h1> 
     	  </div>

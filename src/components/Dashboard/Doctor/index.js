@@ -28,22 +28,20 @@ class Doctor extends Component {
     return (
     		 <BrowserRouter>
     	        <div className="row">
-    	        
     	          <div className="side-nav col-md-1">
     	            <div className="list-group ">
     	              <NavLink to="/dashboard/searchPatient" className="list-group-item" activeClassName="active"><img src="https://www.vnahg.org/sites/default/files/who-should-have-a-visiting-physican-hover.svg" width="40px" height="40px"></img></NavLink>
-    	              </div>
+    	            </div>
     	          </div>
     	          <Switch>
     	            <Route path="/dashboard/searchPatient" exact component={searchPatient}/>
     	            <Route path="/dashboard/Schedule" component={Schedule}/>
     	            <Route path="/dashboard/patientMedications/:id"  component={patientMedications}/>
     	            <Route path="/dashboard/patientDetails/:name"  component={PatientDemographics}/>
-    	            
     	          </Switch>
     	       </div>
     	     </BrowserRouter>
-     
+
     );
   }
 }

@@ -29,13 +29,162 @@ router.post( '/activites', function( req, res, next ) {
   });
 });
 
-router.get( '/latestActivity', function(req, res, next ) {
-  var json = JSON.stringify({
-    date: '04/12/2017',
-    steps: '5000'
+router.post( '/glucose', function( req, res, next ) {
+  var collection = db.get().collection('glucose'),
+  patientId = req.body.patientId,
+  glucoseObject = {
+    'patientId' : patientId,
+    'glucose' : [
+      {
+        'data' : req.body.glucose,
+        'date' : req.body.ObservationDate,
+        'unit' : req.body.unit
+      }
+    ]
+  };
+  db.getRecord(collection, {patientId: patientId}, function(document) {
+    if ( document != null ) {
+      db.updateRecord( collection,
+        { patientId: patientId },
+        { $addToSet: {glucose: {$each: glucoseObject.glucose}}}, function(){
+        res.send('Success');
+      });
+    } else {
+      db.addRecord( collection, glucoseObject, function(){
+        res.send('Success')
+      });
+    }
   });
-  res.setHeader('Content-Type', 'application/json');
-  res.send(json);
+});
+
+router.post( '/caloriesBurned', function( req, res, next ) {
+  var collection = db.get().collection('caloriesBurned'),
+  patientId = req.body.patientId;
+  calorieObject = {
+    'patientId' : patientId,
+    'calories' : [
+      {
+        'data' : req.body.calories,
+        'date' : req.body.ObservationDate,
+        'unit' : req.body.unit
+      }
+    ]
+  };
+  db.getRecord(collection, {patientId: patientId}, function(document) {
+    if ( document != null ) {
+      db.updateRecord( collection,
+        { patientId: patientId },
+        { $addToSet: {calories: {$each: calorieObject.calories}}}, function(){
+        res.send('Success');
+      });
+    } else {
+      db.addRecord( collection, calorieObject, function(){
+        res.send('Success')
+      });
+    }
+  });
+});
+
+router.post( '/caloriesIntake', function( req, res, next ) {
+  var collection = db.get().collection('caloriesIntake'),
+  patientId = req.body.patientId;
+  calorieObject = {
+    'patientId' : patientId,
+    'calories' : [
+      {
+        'data' : req.body.calories,
+        'date' : req.body.ObservationDate,
+        'unit' : req.body.unit
+      }
+    ]
+  };
+  db.getRecord(collection, {patientId: patientId}, function(document) {
+    if ( document != null ) {
+      db.updateRecord( collection,
+        { patientId: patientId },
+        { $addToSet: {calories: {$each: calorieObject.calories}}}, function(){
+        res.send('Success');
+      });
+    } else {
+      db.addRecord( collection, calorieObject, function(){
+        res.send('Success')
+      });
+    }
+  });
+});
+
+function custom_sort(a, b) {
+  return new Date(a.date).getTime() - new Date(b.date).getTime();
+}
+
+router.get( '/activities', function(req, res, next ) {
+  var collection = db.get().collection('activities');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.activity;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"activity":record});
+    }else{
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/glucose', function(req, res, next ) {
+  var collection = db.get().collection('glucose');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.glucose;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"glucose":record});
+    } else {
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/caloriesBurned', function(req, res, next ) {
+  var collection = db.get().collection('caloriesBurned');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.calories;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"caloriesBurned":record});
+    } else {
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/caloriesIntake', function(req, res, next ) {
+  var collection = db.get().collection('caloriesIntake');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.calories;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"caloriesIntake":record});
+    } else {
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/latestActivity', function(req, res, next ) {
+  var collection = db.get().collection('activities');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.activity;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(record[record.length-1]);
+    } else {
+      res.send('No data');
+    }
+  });
 });
 
 router.get( '/latestGlucose', function(req, res, next ) {
@@ -52,7 +201,7 @@ router.get( '/latestGlucose', function(req, res, next ) {
 router.get( '/latestCaloriesBurned', function(req, res, next ) {
   var json = JSON.stringify({
     date: '04/12/2017',
-    calories: '1000',
+    calories: '300',
     units: 'kcal'
   });
   res.setHeader('Content-Type', 'application/json');
@@ -62,7 +211,7 @@ router.get( '/latestCaloriesBurned', function(req, res, next ) {
 router.get( '/latestCaloriesIntake', function(req, res, next ) {
   var json = JSON.stringify({
     date: '04/12/2017',
-    calories: '300',
+    calories: '1000',
     units: 'kcal'
   });
   res.setHeader('Content-Type', 'application/json');
