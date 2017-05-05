@@ -14,7 +14,7 @@ router.get('/searchPatient',function(req,res,next){
 	var collection = db.get().collection('patientDetails');
 	db.findRecordNoFilter(collection,function(document){
 		if(document!=null){
-			
+
 			res.setHeader('Content-Type', 'application/json');
 			res.send(((document)));
 		}
@@ -26,7 +26,7 @@ router.post('/searchPatientById', function(req,res,next){
 	 var collection = db.get().collection('patientDetails');
 	 db.getRecord(collection, {fname: patientId}, function(document) {
 		    if ( document != null ) {
-		    	
+
 		        res.send(document);
 		        }
 		  });
@@ -37,17 +37,17 @@ router.post('/loginCheck', function(req,res,next){
 		 var collection = db.get().collection('patientDetails');
 	 db.getRecord(collection, {id: 6}, function(document) {
 		    if ( document != null ) {
-		    
+
 		        res.send(JSON.stringify(document));
 		        }
-		  }); 
+		  });
 });
 
 router.get('/medicationsList', function(req,res,next){
 	var collection = db.get().collection('ml');
 	db.findRecordNoFilter(collection,function(document){
 		if(document!=null){
-			
+
 			res.setHeader('Content-Type', 'application/json');
 			res.send(document);
 		}
@@ -61,7 +61,7 @@ router.post('/patientMedications', function(req,res,next){
 		    if ( document != null ) {
 		        res.send(JSON.stringify(document.items));
 		        }
-		  }); 
+		  });
 });
 
 
@@ -73,13 +73,13 @@ router.post('/removeMedications', function(req,res,next){
 		        { $pull: {items: {"name": obj.items.name}}}, function(){
 		        	//console.log(JSON.stringify(document.items));
 		        	// res.send('Success');
-		        
+
 		       	 	db.getRecord(collection, {pat_id:obj.id}, function(document) {
 		       		    if ( document != null ) {
 		       		    	console.log("removeMedications is " + JSON.stringify(document.items));
 		       		        res.send(JSON.stringify(document.items));
 		       		        }
-		       		  }); 
+		       		  });
 		      });
 });
 

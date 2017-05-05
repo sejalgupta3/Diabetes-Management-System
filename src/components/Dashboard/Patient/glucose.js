@@ -102,7 +102,7 @@ class Glucose extends Component {
               <tr>
                 <th>#</th>
                 <th>Date</th>
-                <th>Glucose</th>
+                <th class="">Glucose</th>
               </tr>
             </thead>
             {this.state.glucoseTableBodyHtml}

@@ -180,7 +180,7 @@ router.get( '/latestActivity', function(req, res, next ) {
       var record = document.activity;
       record = record.sort(custom_sort);
       res.setHeader('Content-Type', 'application/json');
-      res.send(record[record.length-1]);
+      res.send(record[0]);
     } else {
       res.send('No data');
     }
@@ -188,34 +188,46 @@ router.get( '/latestActivity', function(req, res, next ) {
 });
 
 router.get( '/latestGlucose', function(req, res, next ) {
-  var json = JSON.stringify({
-    date: '04/12/2017',
-    value: '10.0',
-    units: 'mmol/L',
-    time: 'Before Lunch'
+  var collection = db.get().collection('glucose');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.glucose;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"glucose":record[0]});
+    } else {
+      res.send('No data');
+    }
   });
-  res.setHeader('Content-Type', 'application/json');
-  res.send(json);
 });
 
 router.get( '/latestCaloriesBurned', function(req, res, next ) {
-  var json = JSON.stringify({
-    date: '04/12/2017',
-    calories: '300',
-    units: 'kcal'
+  var collection = db.get().collection('caloriesBurned');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.calories;
+      record = record.sort(custom_sort);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"caloriesBurned":record[record.length-1]});
+    } else {
+      res.send('No data');
+    }
   });
-  res.setHeader('Content-Type', 'application/json');
-  res.send(json);
 });
 
 router.get( '/latestCaloriesIntake', function(req, res, next ) {
-  var json = JSON.stringify({
-    date: '04/12/2017',
-    calories: '1000',
-    units: 'kcal'
+  var collection = db.get().collection('caloriesIntake');
+  db.getRecord(collection, {patientId: 111}, function(document) {
+    if ( document != null ) {
+      var record = document.calories;
+      record = record.sort(custom_sort);
+      console.log(record);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"caloriesIntake":record[record.length-1]});
+    } else {
+      res.send('No data');
+    }
   });
-  res.setHeader('Content-Type', 'application/json');
-  res.send(json);
 });
 
 module.exports = router;

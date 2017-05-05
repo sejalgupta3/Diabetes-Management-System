@@ -8,33 +8,34 @@ import Login from  './Login/LoginCheck';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.getUserSpecificDashboard = this.getUserSpecificDashboard.bind(this);
+  }
 
-  this.getUserType = this.getUserType.bind(this);
-  this.getUserSpecificDashboard = this.getUserSpecificDashboard.bind(this);
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 
   /*Function meant to fetch userType from API*/
-  getUserType = function(){
-    return 'doctor';
+  getUserType = function() {
+    return this.getUrlParameter("user");
   }
 
-  
   getUserSpecificDashboard = function() {
-    if(this.getUserType() == 'patient'){
-      return <PatientDashboard/>
-    }else{
+    if(this.getUserType() == 'patient') {
+      return <PatientDashboard id={this.getUrlParameter("id")}/>
+    } else {
       return <DoctorDashboard/>
     }
   }
-  
 
   render() {
     return (
       <div>
         <Header/>
-       
-        <this.getUserSpecificDashboard/>
-  
+          <this.getUserSpecificDashboard/>
         <Footer/>
       </div>
     );
