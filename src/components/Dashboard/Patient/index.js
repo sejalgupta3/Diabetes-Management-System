@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   BrowserRouter,
+  HashRouter,
   Router,
   Link,
   IndexRoute,
@@ -17,28 +18,28 @@ import Medication from './medication';
 class PatientDashboard extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div className="container root">
           <div className="side-nav col-md-2">
             <div className="list-group ">
-              <NavLink to="/dashboard" className="list-group-item">Home</NavLink>
-              <NavLink to="/activities" className="list-group-item">Activities</NavLink>
-              <NavLink to="/calories" className="list-group-item">Calories</NavLink>
-              <NavLink to="/glucose" className="list-group-item">Glucose</NavLink>
-              <NavLink to="/medication" className="list-group-item">Medication</NavLink>
+              <NavLink to="home" className="list-group-item"><span className="glyphicon glyphicon-home"></span>Home</NavLink>
+              <NavLink to="activities" className="list-group-item"><span className="glyphicon glyphicon-dashboard"></span>Activities</NavLink>
+              <NavLink to="calories" className="list-group-item"><span className="glyphicon glyphicon-fire"></span>Calories</NavLink>
+              <NavLink to="glucose" className="list-group-item"><span className="glyphicon glyphicon-heart-empty"></span>Glucose</NavLink>
+              <NavLink to="medication" className="list-group-item"><span className="glyphicon glyphicon-erase"></span>Medication</NavLink>
             </div>
           </div>
           <div className="col-md-10 side-content">
             <Switch>
-              <Route path="/dashboard" exact component={Home}/>
+              <Route path="/home" component={Home}/>
               <Route path="/activities" component={Activities}/>
-              <Route path="/calories" exact component={Calories}/>
+              <Route path="/calories" component={Calories}/>
               <Route path="/glucose" component={Glucose}/>
               <Route path="/medication" component={Medication}/>
             </Switch>
           </div>
        </div>
-     </BrowserRouter>
+     </HashRouter>
     );
   }
 }

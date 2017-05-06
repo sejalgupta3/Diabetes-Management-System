@@ -9,8 +9,7 @@ class Home extends Component {
       glucose: '{}',
       caloriesBurned: '{}',
       caloriesIntake: '{}',
-      predictedGlucose: '[]'
-    };
+      predictedGlucose: '[]'    };
   }
 
   componentWillMount = function(){
@@ -21,7 +20,15 @@ class Home extends Component {
     //this.getPredictedGlucose();
   }
 
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   makeGetRequest(url, callback) {
+    url = url + '?patientId=' + this.getUrlParameter("id");
     var request = new Request(url, {
     	method: 'GET',
     	mode: 'cors',
@@ -63,21 +70,18 @@ class Home extends Component {
 
   getLatestGlucose = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestGlucose', function(json){
-      console.log(json.glucose);
       this.setState({'glucose':{'unit':json.glucose.unit, 'value':json.glucose.data[0].value}})
     }.bind(this));
   }
 
   getLatestCaloriesBurned = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestCaloriesBurned', function(json){
-      console.log(json);
       this.setState({'caloriesBurned':json.caloriesBurned})
     }.bind(this));
   }
 
   getLatestCaloriesIntakeWidget = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestCaloriesIntake', function(json){
-      console.log(json);
       this.setState({'caloriesIntake':json.caloriesIntake})
     }.bind(this));
   }
@@ -103,7 +107,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="row widget-items">
+      <div className="widget-items">
           <div className="col-md-4">
             <this.widget
               heading="GLUCOSE"
@@ -116,21 +120,21 @@ class Home extends Component {
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="BLOOD PRESSURE"
-              value="30"
-              units={this.state.caloriesIntake.units}
-              image = {
-                <img className="img-responsive" src="/images/bp.png"></img>
-              }
-            />
-          </div>
-          <div className="col-md-4">
-            <this.widget
               heading="Body Mass Index"
               value={200}
               units={this.state.caloriesIntake.units}
               image = {
                 <img className="img-responsive" src="/images/BMI.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="BLOOD PRESSURE"
+              value="30"
+              units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/bp.png"></img>
               }
             />
           </div>
@@ -153,7 +157,7 @@ class Home extends Component {
             <this.widget
               heading="CALORIES BURNED"
               value={this.state.caloriesBurned.data}
-              units={this.state.caloriesBurned.units}
+              units={this.state.caloriesBurned.unit}
               graph = {
                 <SolidGuage
                   text = 'Calories'
@@ -168,7 +172,7 @@ class Home extends Component {
             <this.widget
               heading="CALORIES INTAKE"
               value={this.state.caloriesIntake.data}
-              units={this.state.caloriesIntake.units}
+              units={this.state.caloriesIntake.unit}
               graph = {
                 <SolidGuage
                   text = 'Calories'
@@ -176,45 +180,6 @@ class Home extends Component {
                   units = 'kcal'
                   goal = '3000'
                 />
-              }
-            />
-          </div>
-          <div className="col-md-4">
-            <this.widget
-              heading="BLOOD TYPE"
-              value="30"
-              units={this.state.caloriesIntake.units}
-              image = {
-                <img className="img-responsive" src="/images/bp.png"></img>
-              }
-            />
-          </div>
-         <div className="col-md-4">
-            <this.widget
-              heading="HEIGHT"
-              value="20"
-              units={this.state.caloriesIntake.units}
-              image = {
-                <img className="img-responsive" src="/images/height.png"></img>
-              }
-            />
-          </div>
-          <div className="col-md-4">
-            <this.widget
-              heading="WEIGHT"
-              value="100"
-              units={this.state.caloriesIntake.units}
-              image = {
-                <img className="img-responsive" src="/images/weight.png"></img>
-              }
-            />
-          </div>
-          <div className="col-md-4" >
-            <this.widget
-              heading="Predicted Glucose Value"
-              value="20"
-              image = {
-                <img className="img-responsive" src="/images/pg.png"></img>
               }
             />
           </div>

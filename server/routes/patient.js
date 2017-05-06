@@ -117,12 +117,16 @@ function custom_sort(a, b) {
   return new Date(a.date).getTime() - new Date(b.date).getTime();
 }
 
+function custom_sort_diabetes(a, b) {
+  return new Date(a.Date).getTime() - new Date(b.Date).getTime();
+}
+
 router.get( '/activities', function(req, res, next ) {
   var collection = db.get().collection('activities');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.activity;
-      record = record.sort(custom_sort);
+      record = record.sort(custom_sort_diabetes);
       res.setHeader('Content-Type', 'application/json');
       res.send({"activity":record});
     }else{
@@ -133,7 +137,7 @@ router.get( '/activities', function(req, res, next ) {
 
 router.get( '/glucose', function(req, res, next ) {
   var collection = db.get().collection('glucose');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.glucose;
       record = record.sort(custom_sort);
@@ -147,7 +151,7 @@ router.get( '/glucose', function(req, res, next ) {
 
 router.get( '/caloriesBurned', function(req, res, next ) {
   var collection = db.get().collection('caloriesBurned');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.calories;
       record = record.sort(custom_sort);
@@ -161,7 +165,7 @@ router.get( '/caloriesBurned', function(req, res, next ) {
 
 router.get( '/caloriesIntake', function(req, res, next ) {
   var collection = db.get().collection('caloriesIntake');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.calories;
       record = record.sort(custom_sort);
@@ -175,7 +179,7 @@ router.get( '/caloriesIntake', function(req, res, next ) {
 
 router.get( '/latestActivity', function(req, res, next ) {
   var collection = db.get().collection('activities');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId:parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.activity;
       record = record.sort(custom_sort);
@@ -189,7 +193,7 @@ router.get( '/latestActivity', function(req, res, next ) {
 
 router.get( '/latestGlucose', function(req, res, next ) {
   var collection = db.get().collection('glucose');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.glucose;
       record = record.sort(custom_sort);
@@ -203,7 +207,7 @@ router.get( '/latestGlucose', function(req, res, next ) {
 
 router.get( '/latestCaloriesBurned', function(req, res, next ) {
   var collection = db.get().collection('caloriesBurned');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.calories;
       record = record.sort(custom_sort);
@@ -217,13 +221,50 @@ router.get( '/latestCaloriesBurned', function(req, res, next ) {
 
 router.get( '/latestCaloriesIntake', function(req, res, next ) {
   var collection = db.get().collection('caloriesIntake');
-  db.getRecord(collection, {patientId: 111}, function(document) {
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.calories;
       record = record.sort(custom_sort);
-      console.log(record);
       res.setHeader('Content-Type', 'application/json');
       res.send({"caloriesIntake":record[record.length-1]});
+    } else {
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/calories', function(req, res, next) {
+  var dateReq =  new Date(req.query.date),
+  dateReqSt = (parseInt(dateReq.getMonth())+1) +'-'+dateReq.getDate()+'-'+dateReq.getFullYear();
+  var collectionB = db.get().collection('caloriesBurned');
+  var collectionI = db.get().collection('caloriesIntake');
+  var avgB = 0, avgI = 0;
+  db.getRecord(collectionB, {patientId: parseInt(req.query.patientId)}, function(document) {
+    if ( document != null ) {
+      var recordB = document.calories;
+      for(var i in recordB){
+        var date = new Date(recordB[i].date);
+        var dateString = (parseInt(date.getMonth())+1) +'-'+date.getDate()+'-'+date.getFullYear();
+        if(dateString == dateReqSt){
+          avgB = avgB + parseInt(recordB[i].data);
+        }
+      }
+      db.getRecord(collectionI, {patientId: parseInt(req.query.patientId)}, function(document) {
+        if ( document != null ) {
+          var recordI = document.calories;
+          for(var i in recordI){
+            var date = new Date(recordI[i].date);
+            var dateString = (parseInt(date.getMonth())+1)+'-'+date.getDate()+'-'+date.getFullYear();
+            if(dateString == dateReqSt){
+              avgI = avgI + parseInt(recordI[i].data);
+            }
+          }
+          res.setHeader('Content-Type', 'application/json');
+          res.send({"calories":{burned:avgB,intake:avgI}});
+        } else {
+          res.send('No data');
+        }
+      });
     } else {
       res.send('No data');
     }

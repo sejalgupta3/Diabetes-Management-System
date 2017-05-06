@@ -25,7 +25,7 @@ class Dashboard extends Component {
 
   getUserSpecificDashboard = function() {
     if(this.getUserType() == 'patient') {
-      return <PatientDashboard id={this.getUrlParameter("id")}/>
+      return <PatientDashboard id="111"/>
     } else {
       return <DoctorDashboard/>
     }
