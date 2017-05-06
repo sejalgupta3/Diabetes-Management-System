@@ -12,7 +12,7 @@ import searchPatient from './searchPatient';
 import patientMedications from './patientMedications';
 import Schedule from './Schedule';
 import PatientDemographics from './PatientDemographics';
-const io = require('socket.io-client')  
+const io = require('socket.io-client')
 
 class Doctor extends Component {
 	componentWillMount = function(){
@@ -20,10 +20,10 @@ class Doctor extends Component {
 		socket.on('chat message', function(data){
 			if (confirm("Patient " + data.name  + " is here.. View PatientDetails?")) {
 				window.location = '/dashboard/patientDetails/' + data.name ;
-			} 
+			}
 		})
-	      };  
-	
+	      };
+
 	render() {
     return (
     		 <BrowserRouter>
@@ -41,7 +41,6 @@ class Doctor extends Component {
     	          </Switch>
     	       </div>
     	     </BrowserRouter>
-
     );
   }
 }

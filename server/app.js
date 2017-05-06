@@ -20,7 +20,7 @@ app.use('/doctor', doctor);
 
 app.post('/socketEmit', function(req, res) {
     var id =req.param("id");
-    var name = req.param("name"); 
+    var name = req.param("name");
     if(connection){
         io.emit('chat message', { id : id,name :name});
         res.end("Success");
@@ -30,7 +30,7 @@ app.post('/socketEmit', function(req, res) {
     }
 });
 
-app.use(function(req, res, next) {	
+app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();

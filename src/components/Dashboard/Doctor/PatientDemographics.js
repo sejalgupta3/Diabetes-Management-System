@@ -38,6 +38,11 @@ class PatientDemographics extends Component {
 			    window.location = '/dashboard/patientMedications/' + this.state.patientId ;
 			  }
 		 
+		 showStatus = () => {
+			 window.location = '/dashboard/?user=patient&id=' + this.state.patientId + "#/home" ;
+			    
+			  }
+		 
 		 makePostRequest(url,params, callback){
 			    var request = new Request(url, {
 			    	method: 'POST',
@@ -136,7 +141,7 @@ render() {
     			</div>	
     			<div className="col-md-6">
 					<div className="form-inline">
-						<button type="button" className="btn btn-warning">View Patient Status</button>	
+						<button type="button" className="btn btn-warning" onClick={this.showStatus}>View Patient Status</button>	
 					</div>
 				</div>	
            	</div>

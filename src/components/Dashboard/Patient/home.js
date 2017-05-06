@@ -6,9 +6,9 @@ class Home extends Component {
     super(props);
     this.state = {
       steps: '[]',
-      glucose: '[]',
-      caloriesBurned: '[]',
-      caloriesIntake: '[]',
+      glucose: '{}',
+      caloriesBurned: '{}',
+      caloriesIntake: '{}',
       predictedGlucose: '[]'
     };
   }
@@ -63,19 +63,22 @@ class Home extends Component {
 
   getLatestGlucose = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestGlucose', function(json){
-      this.setState({'glucose':json})
+      console.log(json.glucose);
+      this.setState({'glucose':{'unit':json.glucose.unit, 'value':json.glucose.data[0].value}})
     }.bind(this));
   }
 
   getLatestCaloriesBurned = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestCaloriesBurned', function(json){
-      this.setState({'caloriesBurned':json})
+      console.log(json);
+      this.setState({'caloriesBurned':json.caloriesBurned})
     }.bind(this));
   }
 
   getLatestCaloriesIntakeWidget = function() {
     this.makeGetRequest('http://localhost:9000/patient/latestCaloriesIntake', function(json){
-      this.setState({'caloriesIntake':json})
+      console.log(json);
+      this.setState({'caloriesIntake':json.caloriesIntake})
     }.bind(this));
   }
 
@@ -103,6 +106,36 @@ class Home extends Component {
       <div className="row widget-items">
           <div className="col-md-4">
             <this.widget
+              heading="GLUCOSE"
+              value={this.state.glucose.value}
+              units={this.state.glucose.unit}
+              image = {
+                <img className="img-responsive" src="/images/glucose.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="BLOOD PRESSURE"
+              value="30"
+              units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/bp.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="Body Mass Index"
+              value={200}
+              units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/BMI.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
               heading = "ACTIVITY"
               value = {this.state.steps.StepCount}
               units = "Steps"
@@ -119,7 +152,7 @@ class Home extends Component {
           <div className="col-md-4">
             <this.widget
               heading="CALORIES BURNED"
-              value={this.state.caloriesBurned.calories}
+              value={this.state.caloriesBurned.data}
               units={this.state.caloriesBurned.units}
               graph = {
                 <SolidGuage
@@ -134,7 +167,7 @@ class Home extends Component {
           <div className="col-md-4">
             <this.widget
               heading="CALORIES INTAKE"
-              value={this.state.caloriesIntake.calories}
+              value={this.state.caloriesIntake.data}
               units={this.state.caloriesIntake.units}
               graph = {
                 <SolidGuage
@@ -148,39 +181,41 @@ class Home extends Component {
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="GLUCOSE"
-              value={this.state.caloriesIntake.calories}
+              heading="BLOOD TYPE"
+              value="30"
               units={this.state.caloriesIntake.units}
               image = {
-                <img className="img-responsive" src="/images/glucose.png"></img>
+                <img className="img-responsive" src="/images/bp.png"></img>
+              }
+            />
+          </div>
+         <div className="col-md-4">
+            <this.widget
+              heading="HEIGHT"
+              value="20"
+              units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/height.png"></img>
               }
             />
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="BLOOD PRESSURE"
-              value={this.state.caloriesIntake.calories}
-              units={this.state.caloriesIntake.units}
-            />
-          </div>
-          <div className="col-md-4">
-            <this.widget
-              heading="HEIGHT"
-              value={this.state.caloriesIntake.calories}
-              units={this.state.caloriesIntake.units}
-            />
-          </div>
-          <div className="col-md-4">
-            <this.widget
               heading="WEIGHT"
-              value={this.state.caloriesIntake.calories}
+              value="100"
               units={this.state.caloriesIntake.units}
+              image = {
+                <img className="img-responsive" src="/images/weight.png"></img>
+              }
             />
           </div>
           <div className="col-md-4" >
             <this.widget
               heading="Predicted Glucose Value"
-              value={this.state.predictedGlucose}
+              value="20"
+              image = {
+                <img className="img-responsive" src="/images/pg.png"></img>
+              }
             />
           </div>
       </div>

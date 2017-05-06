@@ -4,16 +4,14 @@ import React, { Component } from 'react';
 class LoginCheck extends Component {
   constructor(props) {
     super(props);
-
     this.getPatientList = this.getPatientList.bind(this);
- 
   }
-  
-  makePostRequest(url,params, callback){
+
+  makePostRequest(url,params, callback) {
 	    var request = new Request(url, {
 	    	method: 'POST',
 	    	body: JSON.stringify({
-	    		data: params	
+	    		data: params
 	    	}),
 	    	mode: 'cors',
 	    	redirect: 'follow',
@@ -67,30 +65,30 @@ class LoginCheck extends Component {
           	    <div className="form-wrap">
                   <h1>Log in with your email account</h1>
                       <form role="form" id="login-form" autocomplete="off"  onSubmit={this.ValidateUser}>
-                    
-                      
+
                      <div className="form-group">
                       <input type="radio" id="doc" name="userType" value="Doctor" />   I am a Doctor 
                     	 
                       <input type="radio" id="pat"  name="userType" value="Patient"/>   I am a Patient
+
                      </div>
-                        
+
                           <div className="form-group">
-                              <label for="email" className="sr-only">Email</label> 
+                              <label for="email" className="sr-only">Email</label>
                               <input type="email" name="email" id="email" className="form-control" placeholder="somebody@example.com"/>
                           </div>
                           <div className="form-group">
                               <label for="key" className="sr-only">Password</label>
                               <input type="password" name="key" id="pwd" className="form-control" placeholder="Password"/>
                           </div>
-                         
+
                           <input type="submit" id="btn-login" className="btn btn-custom btn-lg btn-block" value="Log in"/>
                       </form>
-                      
+
           	    </div>
-      		</div> 
-      	</div> 
-      </div> 
+      		</div>
+      	</div>
+      </div>
   </section>
       </div>
     );
