@@ -17,6 +17,13 @@ class Activities extends Component {
     this.getActivities();
   }
 
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   getActivities = function() {
     this.makeGetRequest('http://localhost:9000/patient/activities', function(json){
       var c = [];
@@ -24,13 +31,13 @@ class Activities extends Component {
       var tableRows = [];
       for( var dateIndex in json.activity) {
         var date = new Date(json.activity[dateIndex].Date);
-        c.push(date.getMonth()+'-'+date.getDate()+'-'+date.getFullYear());
+        c.push((parseInt(date.getMonth())+1)+'-'+date.getDate()+'-'+date.getFullYear());
         d.push(json.activity[dateIndex].StepCount);
         tableRows.push(
           (
           <tr>
             <td>{parseInt(dateIndex)+1}</td>
-            <td>{date.getMonth()+'-'+date.getDate()+'-' + date.getFullYear()}</td>
+            <td>{(parseInt(date.getMonth())+1)+'-'+date.getDate()+'-' + date.getFullYear()}</td>
             <td>{json.activity[dateIndex].WalkingRunningDistance}</td>
             <td>{json.activity[dateIndex].StepCount}</td>
           </tr>
@@ -50,6 +57,7 @@ class Activities extends Component {
   }
 
   makeGetRequest(url, callback) {
+    url = url + '?patientId=' + this.getUrlParameter("id");
     var request = new Request(url, {
       method: 'GET',
       mode: 'cors',
@@ -75,11 +83,11 @@ class Activities extends Component {
   render() {
     return (
       <div>
-        <div className="row widget-items">
+        <div className="widget-items">
           <this.activityGraph/>
         </div>
-        <div className="row widget-items">
-          <table className="table table-striped">
+        <div className="widget-items">
+          <table className="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>#</th>

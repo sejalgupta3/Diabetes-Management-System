@@ -19,7 +19,15 @@ class Calories extends Component {
     this.getCaloriesBurned();
   }
 
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   makeGetRequest(url, callback) {
+    url = url + '?patientId=' + this.getUrlParameter("id");
     var request = new Request(url, {
       method: 'GET',
       mode: 'cors',
@@ -64,7 +72,7 @@ class Calories extends Component {
 
     for(var i in cIntake) {
       var date = new Date(cIntake[i].date),
-      dateString = date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear(),
+      dateString = (parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear(),
       obj = {
         time: date.toTimeString(),
         data: cIntake[i].data
@@ -83,7 +91,7 @@ class Calories extends Component {
 
     for(var i in cBurned) {
       var date = new Date(cBurned[i].date),
-      dateString = date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear(),
+      dateString = (parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear(),
       obj = {
         time: date.toTimeString(),
         data: cBurned[i].data
@@ -105,7 +113,7 @@ class Calories extends Component {
 
     for(var i in sortedDatesArr) {
       var date = sortedDatesArr[i];
-      var index = date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear();
+      var index = (parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear();
       stringArr.push(index);
       var avgCB = 0,
       avgCI = 0,
@@ -155,11 +163,11 @@ class Calories extends Component {
   render() {
     return (
       <div>
-        <div className="row widget-items">
+        <div className="widget-items">
           <Area caloriesIntake={this.state.caloriesIntake} caloriesBurned={this.state.caloriesBurned} dates={this.state.dates}/>
         </div>
-        <div className="row widget-items">
-          <table className="table table-striped">
+        <div className="widget-items">
+          <table className="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>#</th>

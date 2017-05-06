@@ -16,7 +16,15 @@ class Glucose extends Component {
     this.getGlucose();
   }
 
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   makeGetRequest(url, callback) {
+    url = url + '?patientId=' + this.getUrlParameter("id");
     var request = new Request(url, {
       method: 'GET',
       mode: 'cors',
@@ -49,7 +57,7 @@ class Glucose extends Component {
         date = new Date(data.date),
         pArray = [];
 
-        datesArr.push(date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear());
+        datesArr.push((parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear());
         for(var j in data.data) {
           avg = avg + parseInt(data.data[j].value);
           time = this.ConvertNumberToTwoDigitString(date.getUTCHours()) +
@@ -64,7 +72,7 @@ class Glucose extends Component {
           (
           <tr>
             <td>{parseInt(index)+1}</td>
-            <td>{date.getMonth()+'-'+date.getDate()+'-'+date.getFullYear()}</td>
+            <td>{(parseInt(date.getMonth())+1)+'-'+date.getDate()+'-'+date.getFullYear()}</td>
             <td>{pArray}</td>
           </tr>
         ));
@@ -93,11 +101,11 @@ class Glucose extends Component {
   render() {
     return (
       <div>
-        <div className="row widget-items">
+        <div className="widget-items">
           <Line data={this.state.dataArr} categories={this.state.datesArr}/>
         </div>
-        <div className="row widget-items">
-          <table className="table table-striped">
+        <div className="widget-items">
+          <table className="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>#</th>

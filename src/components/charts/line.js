@@ -31,7 +31,7 @@ class Line extends Component {
           series: [{
               name: 'Glucose',
               data: this.props.data,
-              color: 'rgb(247, 163, 92)'
+              color: 'red'
           }]
         }}
         ref="chart"/>

@@ -1,32 +1,18 @@
 import React, { Component } from 'react';
+import CalendarHeatmap from 'react-calendar-heatmap';
 
 class Medication extends Component {
+  getUrlParameter = function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   render() {
     return (
       <div className="col-md-10">
-        <div className="row widget-items">
-          <table class="table table-hover">
-            <tr>
-              <th>Time</th>
-              <th>Sunday</th>
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
-              <th>Saturday</th>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
+        
       </div>
     );
   }

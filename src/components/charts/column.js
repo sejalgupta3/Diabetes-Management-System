@@ -9,6 +9,7 @@ class Column extends Component {
           chart: {
         type: 'column'
     },
+    colors: ['rgba(124, 181, 236, 0.5)'],
     title: {
         text: 'Activity Records'
     },
@@ -33,7 +34,8 @@ class Column extends Component {
     plotOptions: {
         column: {
             pointPadding: 0.2,
-            borderWidth: 0
+            borderWidth: 1,
+            fillOpacity: 0.8
         }
     },
     series: [{
