@@ -15,7 +15,7 @@ class Dashboard extends Component {
 
   /*Function meant to fetch userType from API*/
   getUserType = function(){
-    return 'patient';
+    return 'doctor';
   }
 
   

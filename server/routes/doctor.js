@@ -33,13 +33,18 @@ router.post('/searchPatientById', function(req,res,next){
 });
 
 router.post('/loginCheck', function(req,res,next){
-	 patientId = req.body.data;
+	 patientDetails = req.body.data;
+	 
+	// console.log("Login Data " + JSON.stringify(patientDetails));
 		 var collection = db.get().collection('patientDetails');
-	 db.getRecord(collection, {id: 6}, function(document) {
+		 	db.getRecord(collection, {email: patientDetails.email}, function(document) {
 		    if ( document != null ) {
-		    
+		    	console.log(JSON.stringify(document));
 		        res.send(JSON.stringify(document));
 		        }
+		    else{
+		    	 res.send('Success');
+		    }
 		  }); 
 });
 

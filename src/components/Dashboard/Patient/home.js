@@ -11,8 +11,6 @@ class Home extends Component {
       caloriesIntake: '[]',
       predictedGlucose: '[]'
     };
-
-    this.WeightChart = this.WeightChart.bind(this);
   }
 
   componentWillMount = function(){
