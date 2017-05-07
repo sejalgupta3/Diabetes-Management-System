@@ -12,13 +12,18 @@ router.use(function(req, res, next) {
 router.post( '/activites', function( req, res, next ) {
   var collection = db.get().collection('activities'),
   patientId = req.body.patientId,
-  activityData = req.body.activity;
-
+  activityData = req.body.activity,
+  activityObject = [{
+	  "StepCount" : activityData[0].StepCount,
+		"WalkingRunningDistance" : activityData[0].WalkingRunningDistance,
+		"Date" : new Date(activityData[0].Date)
+	}];
+  console.log(activityData);
   db.getRecord(collection, {patientId: patientId}, function(document) {
     if ( document != null ) {
       db.updateRecord( collection,
         { patientId: patientId },
-        { $addToSet: {activity: {$each: activityData}}}, function(){
+        { $addToSet: {activity: {$each: activityObject}}}, function(){
         res.send('Success');
       });
     } else {
@@ -30,6 +35,7 @@ router.post( '/activites', function( req, res, next ) {
 });
 
 router.post( '/glucose', function( req, res, next ) {
+  console.log(req.body);
   var collection = db.get().collection('glucose'),
   patientId = req.body.patientId,
   glucoseObject = {
@@ -58,13 +64,14 @@ router.post( '/glucose', function( req, res, next ) {
 });
 
 router.post( '/caloriesBurned', function( req, res, next ) {
+  console.log(req.body);
   var collection = db.get().collection('caloriesBurned'),
   patientId = req.body.patientId;
   calorieObject = {
     'patientId' : patientId,
     'calories' : [
       {
-        'data' : req.body.calories,
+        'data' : req.body.CalorieBurned,
         'date' : req.body.ObservationDate,
         'unit' : req.body.unit
       }
@@ -92,7 +99,7 @@ router.post( '/caloriesIntake', function( req, res, next ) {
     'patientId' : patientId,
     'calories' : [
       {
-        'data' : req.body.calories,
+        'data' : req.body.calorieIntake,
         'date' : req.body.ObservationDate,
         'unit' : req.body.unit
       }
@@ -107,6 +114,32 @@ router.post( '/caloriesIntake', function( req, res, next ) {
       });
     } else {
       db.addRecord( collection, calorieObject, function(){
+        res.send('Success')
+      });
+    }
+  });
+});
+
+router.post( '/profileInfo', function( req, res, next ) {
+  var collection = db.get().collection('profileInfo'),
+  patientId = req.body.patientId;
+  object = [{
+	  "height" : req.body.height,
+		"heightUnit" : req.body.heightUnit,
+		"weight" : req.body.weight,
+    "weightUnit" : req.body.weightUnit,
+    "bmi": req.body.bmi,
+    "bmiUnit": req.body.bmiUnit
+	}];
+  db.getRecord(collection, {patientId: patientId}, function(document) {
+    if ( document != null ) {
+      db.updateRecord( collection,
+        { patientId: patientId },
+        { $addToSet: {patientInfo: {$each: object}}}, function(){
+        res.send('Success');
+      });
+    } else {
+      db.addRecord( collection, object, function(){
         res.send('Success')
       });
     }
@@ -129,6 +162,19 @@ router.get( '/activities', function(req, res, next ) {
       record = record.sort(custom_sort_diabetes);
       res.setHeader('Content-Type', 'application/json');
       res.send({"activity":record});
+    }else{
+      res.send('No data');
+    }
+  });
+});
+
+router.get( '/patientInfo', function(req, res, next ) {
+  var collection = db.get().collection('patientInfo');
+  db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
+    if ( document != null ) {
+      var record = document.patientInfo;
+      res.setHeader('Content-Type', 'application/json');
+      res.send({"patientInfo":record});
     }else{
       res.send('No data');
     }
@@ -196,9 +242,10 @@ router.get( '/latestGlucose', function(req, res, next ) {
   db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.glucose;
+      console.log("record"+record[0]);
       record = record.sort(custom_sort);
       res.setHeader('Content-Type', 'application/json');
-      res.send({"glucose":record[0]});
+      res.send({"glucose":record[record.length-1]});
     } else {
       res.send('No data');
     }

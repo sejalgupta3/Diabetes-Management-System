@@ -10,6 +10,7 @@ class Glucose extends Component {
       datesArr: '[]',
       glucoseTableBodyHtml: '[]'
     };
+    this.serverUrl = "http://localhost:9000";
   }
 
   componentWillMount = function() {
@@ -45,38 +46,75 @@ class Glucose extends Component {
       return n > 9 ? "" + n : "0" + n;
   }
 
+  custom_sort = function(a, b) {
+   return a.getTime() - b.getTime();
+  }
+
   getGlucose = function() {
-    this.makeGetRequest('http://localhost:9000/patient/glucose', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/glucose', function(json){
       var datesArr = [],
       dataArr = [],
-      avg, tableRows = [], time;
+      avg, tableRows = [], time,
+      dict = {},
+      glucoseArr = [];
 
-      for(var index in json.glucose) {
-        avg = 0;
-        var data = json.glucose[index],
-        date = new Date(data.date),
+      for(var i in json.glucose) {
+        var data = json.glucose[i];
+        var date = new Date(data["date"]),
+        dateString = (parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear(),
+        obj = {
+          time: date.toTimeString(),
+          data: data.data
+        };
+
+        if (dict[dateString] == undefined) {
+          datesArr.push(date);
+          dict[dateString] = {
+            glucose: [obj],
+          };
+        } else {
+          dict[dateString].glucose.push(obj);
+        }
+      }
+
+      var sortedDatesArr = datesArr.sort(this.custom_sort),
+      stringArr = [],
+      dataHtmlArr = [];
+
+      for(var i in sortedDatesArr) {
+        var date = sortedDatesArr[i];
+        var index = (parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear(),
         pArray = [];
+        stringArr.push(index);
+        var avgG = 0,
+        g = dict[index].glucose;
 
-        datesArr.push((parseInt(date.getMonth())+1) + "-" + date.getDate() + "-" + date.getFullYear());
-        for(var j in data.data) {
-          avg = avg + parseInt(data.data[j].value);
-          time = this.ConvertNumberToTwoDigitString(date.getUTCHours()) +
-           ":" + this.ConvertNumberToTwoDigitString(date.getUTCMinutes());
+        for(var i in g) {
+          avgG = avgG + parseInt(g[i].data);
           pArray.push(
             (
-              <p>{time}: {data.data[j].value}</p>
+              <p>{g[i].time}: {g[i].data}</p>
             )
           );
         }
+
+        glucoseArr.push(avgG);
+        dataHtmlArr.push(pArray);
+      }
+
+      this.setState({dataArr:glucoseArr});
+      this.setState({datesArr:stringArr});
+
+      var tableRows = [];
+      for(var j in stringArr){
         tableRows.push(
           (
           <tr>
-            <td>{parseInt(index)+1}</td>
-            <td>{(parseInt(date.getMonth())+1)+'-'+date.getDate()+'-'+date.getFullYear()}</td>
-            <td>{pArray}</td>
+            <td>{parseInt(j)+1}</td>
+            <td>{stringArr[j]}</td>
+            <td>{dataHtmlArr[j]}</td>
           </tr>
         ));
-        dataArr.push(avg);
       }
 
       var glucoseTableBodyHtml = (
@@ -85,17 +123,8 @@ class Glucose extends Component {
         </tbody>
       );
 
-      this.setState({'glucoseJson':json.glucose});
-      this.setState({'dataArr':dataArr});
-      this.setState({'datesArr':datesArr});
-      this.setState({'glucoseTableBodyHtml':glucoseTableBodyHtml});
+      this.setState({glucoseTableBodyHtml:glucoseTableBodyHtml});
     }.bind(this));
-  }
-
-  getGlucoseTable = function() {
-    var tableRows = [],
-    json = this.state.dataArr;
-    console.log("jsonn"+json);
   }
 
   render() {
@@ -110,7 +139,7 @@ class Glucose extends Component {
               <tr>
                 <th>#</th>
                 <th>Date</th>
-                <th class="">Glucose</th>
+                <th>Glucose</th>
               </tr>
             </thead>
             {this.state.glucoseTableBodyHtml}

@@ -45,7 +45,7 @@ class SolidGuage extends Component {
             tickPixelInterval: 400,
             tickWidth: 0,
             title: {
-              text: this.props.goal - this.props.data[0] + ' more to reach goal',
+              text: parseInt(this.props.goal - this.props.data[0]) + ' more ' +this.props.text,
               y: 100
             },
             labels: {

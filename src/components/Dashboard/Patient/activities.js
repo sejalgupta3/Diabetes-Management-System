@@ -11,6 +11,7 @@ class Activities extends Component {
       activityTableBody: ''
     };
     this.activityGraph = this.activityGraph.bind(this);
+    this.serverUrl = "http://localhost:9000";
   }
 
   componentWillMount = function() {
@@ -25,7 +26,7 @@ class Activities extends Component {
   }
 
   getActivities = function() {
-    this.makeGetRequest('http://localhost:9000/patient/activities', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/activities', function(json){
       var c = [];
       var d = [];
       var tableRows = [];

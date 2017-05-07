@@ -9,7 +9,14 @@ class Home extends Component {
       glucose: '{}',
       caloriesBurned: '{}',
       caloriesIntake: '{}',
-      predictedGlucose: '[]'    };
+      predictedGlucose: '[]',
+      patientInfo: '{}'
+    };
+    this.predictionUrl = "http://ec2-34-208-156-165.us-west-2.compute.amazonaws.com:8000";
+    this.serverUrl = "http://localhost:9000",
+    this.activityGoal = 4000,
+    this.caloriesIntakeGoal = 2000,
+    this.caloriesBurnedGoal = 300
   }
 
   componentWillMount = function(){
@@ -17,7 +24,8 @@ class Home extends Component {
     this.getLatestGlucose();
     this.getLatestCaloriesBurned();
     this.getLatestCaloriesIntakeWidget();
-    //this.getPredictedGlucose();
+    this.getProfileInfo();
+    this.getPredictedGlucose();
   }
 
   getUrlParameter = function(name) {
@@ -63,32 +71,38 @@ class Home extends Component {
  }
 
   getLatestSteps = function() {
-    this.makeGetRequest('http://localhost:9000/patient/latestActivity', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/latestActivity', function(json){
       this.setState({'steps':json})
     }.bind(this));
   }
 
   getLatestGlucose = function() {
-    this.makeGetRequest('http://localhost:9000/patient/latestGlucose', function(json){
-      this.setState({'glucose':{'unit':json.glucose.unit, 'value':json.glucose.data[0].value}})
+    this.makeGetRequest(this.serverUrl+'/patient/latestGlucose', function(json) {
+      this.setState({'glucose':{'unit':json.glucose.unit, 'value':json.glucose.data}})
     }.bind(this));
   }
 
   getLatestCaloriesBurned = function() {
-    this.makeGetRequest('http://localhost:9000/patient/latestCaloriesBurned', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/latestCaloriesBurned', function(json){
       this.setState({'caloriesBurned':json.caloriesBurned})
     }.bind(this));
   }
 
   getLatestCaloriesIntakeWidget = function() {
-    this.makeGetRequest('http://localhost:9000/patient/latestCaloriesIntake', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/latestCaloriesIntake', function(json){
       this.setState({'caloriesIntake':json.caloriesIntake})
     }.bind(this));
   }
 
   getPredictedGlucose = function() {
-    this.makePostRequest('http://10.250.4.104:8000', 19.6 ,function(data){
+    this.makePostRequest(this.predictionUrl, 19.6 ,function(data){
       this.setState({'predictedGlucose':data.value[0]})
+    }.bind(this));
+  }
+
+  getProfileInfo = function() {
+    this.makeGetRequest(this.serverUrl+'/patient/profileInfo', function(data){
+      this.setState({'patientInfo':data.patientInfo})
     }.bind(this));
   }
 
@@ -120,9 +134,9 @@ class Home extends Component {
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="Body Mass Index"
-              value={200}
-              units={this.state.caloriesIntake.units}
+              heading="BODY MASS INDEX"
+              value={this.state.patientInfo.bmi}
+              units={this.state.patientInfo.bmiUnit}
               image = {
                 <img className="img-responsive" src="/images/BMI.png"></img>
               }
@@ -130,11 +144,30 @@ class Home extends Component {
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="BLOOD PRESSURE"
-              value="30"
-              units={this.state.caloriesIntake.units}
+              heading="HEIGHT"
+              value={this.state.patientInfo.height}
+              units={this.state.patientInfo.heightUnit}
               image = {
-                <img className="img-responsive" src="/images/bp.png"></img>
+                <img className="img-responsive" src="/images/height.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="WEIGHT"
+              value={this.state.patientInfo.weight}
+              units={this.state.patientInfo.weightsUnit}
+              image = {
+                <img className="img-responsive" src="/images/weight.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-4">
+            <this.widget
+              heading="HEALTH PREDICTIONS"
+              value={this.state.predictedGlucose}
+              image = {
+                <img className="img-responsive" src="/images/pg.png"></img>
               }
             />
           </div>
@@ -145,10 +178,10 @@ class Home extends Component {
               units = "Steps"
               graph = {
                 <SolidGuage
-                  text = 'Steps'
-                  data= {[6000/8000*100]}
+                  text = 'steps.'
+                  data= {[(this.state.steps.StepCount/this.activityGoal) * 100]}
                   units = 'steps'
-                  goal = '8000'
+                  goal = {this.activityGoal}
                 />
               }
             />
@@ -160,10 +193,10 @@ class Home extends Component {
               units={this.state.caloriesBurned.unit}
               graph = {
                 <SolidGuage
-                  text = 'Calories'
-                  data = {[300/1000*100]}
+                  text = 'calories to burn'
+                  data = {[(this.state.caloriesBurned.data/this.caloriesBurnedGoal) * 100]}
                   units = 'kcal'
-                  goal = '1000'
+                  goal = {this.caloriesBurnedGoal}
                 />
               }
             />
@@ -175,10 +208,10 @@ class Home extends Component {
               units={this.state.caloriesIntake.unit}
               graph = {
                 <SolidGuage
-                  text = 'Calories'
-                  data = {[100/3000*100]}
+                  text =  'calories to intake'
+                  data = {[(this.state.caloriesIntake.data/this.caloriesIntakeGoal) * 100]}
                   units = 'kcal'
-                  goal = '3000'
+                  goal = {this.caloriesIntakeGoal}
                 />
               }
             />

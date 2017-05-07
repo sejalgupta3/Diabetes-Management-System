@@ -13,6 +13,7 @@ class Calories extends Component {
       dates: '[]',
       caloriesTableBody: '[]'
     };
+    this.serverUrl = "http://localhost:9000";
   }
 
   componentWillMount = function() {
@@ -45,15 +46,17 @@ class Calories extends Component {
   }
 
   getCaloriesBurned = function() {
-    this.makeGetRequest('http://localhost:9000/patient/caloriesBurned', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/caloriesBurned', function(json){
+      console.log(json);
       this.setState({'caloriesBurnedJson':json.caloriesBurned});
       this.getCaloriesIntake();
     }.bind(this));
   }
 
   getCaloriesIntake = function() {
-    this.makeGetRequest('http://localhost:9000/patient/caloriesIntake', function(json){
+    this.makeGetRequest(this.serverUrl+'/patient/caloriesIntake', function(json){
       this.setState({'caloriesIntakeJson':json.caloriesIntake});
+      console.log(json);
       this.setGraphData();
     }.bind(this));
   }
@@ -156,7 +159,6 @@ class Calories extends Component {
       </tbody>
     );
 
-    console.log(caloriesTableBodyHtml);
     this.setState({caloriesTableBody:caloriesTableBodyHtml});
   }
 
