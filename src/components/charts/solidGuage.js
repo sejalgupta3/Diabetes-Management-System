@@ -45,7 +45,7 @@ class SolidGuage extends Component {
             tickPixelInterval: 400,
             tickWidth: 0,
             title: {
-              text: parseInt(this.props.goal - this.props.data[0]) + ' more ' +this.props.text,
+              text: parseInt(this.props.goal - this.props.data) + ' more ' +this.props.text,
               y: 100
             },
             labels: {
@@ -68,7 +68,7 @@ class SolidGuage extends Component {
           },
           series: [{
             name: this.props.text,
-            data: [this.props.data]
+            data: [(this.props.data/this.props.goal)*100]
           }]
         }}
         ref="chart"/>

@@ -7,7 +7,7 @@ class Medication extends Component {
       medicationJson: '{}'
     };
     this.renderMedicationTable = this.renderMedicationTable.bind(this);
-    this.serverUrl = "http://localhost:9000";
+    this.serverUrl = "http://35.161.81.114:9000";
   }
 
   componentWillMount = function() {
@@ -44,7 +44,6 @@ class Medication extends Component {
   getPatientMedication = function() {
     this.makePostRequest(this.serverUrl+'/doctor/patientMedications', this.getUrlParameter("id") ,function(json){
       this.setState({'medicationJson':json})
-      console.log(this.state.medicationJson);
     }.bind(this));
   }
 

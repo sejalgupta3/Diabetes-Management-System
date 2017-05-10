@@ -16,7 +16,7 @@ const io = require('socket.io-client')
 
 class Doctor extends Component {
 	componentWillMount = function(){
-		var socket = io.connect('http://localhost:9000');
+		var socket = io.connect('http://35.161.81.114:9000');
 		socket.on('chat message', function(data){
 			if (confirm("Patient " + data.name  + " is here.. View PatientDetails?")) {
 				window.location = '/dashboard/patientDetails/' + data.name ;

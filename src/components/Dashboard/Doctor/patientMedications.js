@@ -3,23 +3,24 @@ import React, { Component } from 'react';
 class patientMedications extends Component {
 	constructor(props) {
 		 super(props);
-		 this.state = { 
+		 this.state = {
 		         id:this.props.match.params.id,
 				 medications: "[]",
 		         items: [],
 		 		};
-		 
+
 		 this.addToPatientList = this.addToPatientList.bind(this);
 		 this.addMedication = this.addMedication.bind(this);
 		 this.removeMedication = this.removeMedication.bind(this);
 		 this.getPatientMedication = this.getPatientMedication.bind(this);
+		 this.serverUrl = "http://35.161.81.114:9000";
 		 }
-	
+
 	componentWillMount = function(){
 	 	this.getMedicationsList();
 	 	this.getPatientMedication(this.state.id);
 	}
-	 
+
 	 makeGetRequest(url, callback){
 		    var request = new Request(url, {
 		    	method: 'GET',
@@ -36,12 +37,12 @@ class patientMedications extends Component {
 		      callback(j);
 		    });
 		  }
-	 
+
 	 makePostRequest(url,params, callback){
 		    var request = new Request(url, {
 		    	method: 'POST',
 		    	body: JSON.stringify({
-		    		data: params	
+		    		data: params
 		    	}),
 		    	mode: 'cors',
 		    	redirect: 'follow',
@@ -58,82 +59,81 @@ class patientMedications extends Component {
 		  }
 
 	 addMedication = function(name) {
-		 this.makePostRequest('http://localhost:9000/doctor/addMedication', name ,function(json){
+		 this.makePostRequest(this.serverUrl+'/doctor/addMedication', name ,function(json){
 			 var data =  JSON.stringify(json);
 		    }.bind(this));
-	}	
+	}
 	 getMedicationsList = function() {
-		this.makeGetRequest('http://localhost:9000/doctor/medicationsList', function(json){
+		this.makeGetRequest(this.serverUrl+'/doctor/medicationsList', function(json){
 			this.setState({'medications':JSON.stringify(json)})
 		    }.bind(this));
-	 }	
+	 }
 	 getPatientMedication = function(id) {
-	 this.makePostRequest('http://localhost:9000/doctor/patientMedications', id ,function(json){
+	 this.makePostRequest(this.serverUrl+'/doctor/patientMedications', id ,function(json){
 			 var newArr = this.state.items.concat(json);
 		 this.setState({'items':newArr})
 		    }.bind(this));
-	}	
+	}
 	 getRemoveMedication = function(obj) {
-		 this.makePostRequest('http://localhost:9000/doctor/removeMedications', obj ,function(json){
-			 console.log({'medications':JSON.stringify(json)});
+		 this.makePostRequest(this.serverUrl+'/doctor/removeMedications', obj ,function(json){
 			 var newArr = this.state.items.concat(json);
 	     	 this.setState({'items':json})
 		//	 this.getPatientMedication(this.state.id);
 		    }.bind(this));
-	}	
+	}
 	 addToPatientList = function() {
 		    var val1 = document.getElementById("ml").value;
 		    var val2 = document.getElementById("Dosage").value;
 		    var val3 = document.getElementById("timing").value;
-		  
+
 		    if(val1=="" || val2=="" || val3 ==""){
 		    	alert("Empty field are not allowed!");} else {
 		    var newItem = {
 				      name: val1,
 				      dosage :val2,
-				      timing :val3 
+				      timing :val3
 				    };
-		    
+
 				    var newArr = this.state.items.concat(newItem);
-				   
+
 				  	this.setState({
 				    	items: newArr,
 				    },function afterStateChange(){
 				    	var obj = {
 				    			pat_id : this.state.id,
-				    			items : this.state.items			
+				    			items : this.state.items
 				    	}
-				    	this.addMedication(obj)})   
-			 document.getElementById("ml").value= ""; 
+				    	this.addMedication(obj)})
+			 document.getElementById("ml").value= "";
 			 document.getElementById("Dosage").value="";
 			 document.getElementById("timing").value="";
 		    }
 	 }
-	 
+
 	 removeMedication = function(medicine){
 		 var obj = {
 	    			id : this.state.id,
-	    			items : medicine			
+	    			items : medicine
 	    	}
 		 this.getRemoveMedication(obj);
-	 } 
-	 
-	 
+	 }
+
+
   render() {
 	  var rows= [];
 		var datalisttable = JSON.parse(this.state.medications);
 		for(var i in datalisttable)
-		{	var id = datalisttable[i].MedicationName; 
+		{	var id = datalisttable[i].MedicationName;
 			rows.push(<option value={id}></option>)  ;
 		}
 		const data = this.state.items.map((item) => {
 	    	return <tr><td>{item.name}</td><td>{item.dosage}</td><td>{item.timing}</td><td><button className="btn btn-danger" onClick = {() => this.removeMedication(item)} > Remove</button></td></tr>
 	    });
 
-    return (	
+    return (
 	<div className="container" >
 		<div className="jumbotron">
-	    	<h1>Patient Medication List</h1> 
+	    	<h1>Patient Medication List</h1>
 	    </div>
 		   <div className="row demo-content">
 				<div className="col-md-12 margins-ib">
@@ -154,7 +154,7 @@ class patientMedications extends Component {
 						<input list="browsers"  id='ml' placeholder="Search Medication.."></input>
 			  	    	<datalist id="browsers">
 			  	    	  {rows}
-			  	    	</datalist>	
+			  	    	</datalist>
 					</div>
 					<div className="form-group padding-ib">
 						<label for="DStime">Dosage:</label>
@@ -167,7 +167,7 @@ class patientMedications extends Component {
 					    	<option value="10 mL, 2 drops"/>
 					    	<option value="One injection"/>
 					    	<option value="2 Puff"/>
-					    </datalist>		
+					    </datalist>
 					</div>
 					<div className="form-group padding-ib">
 						<label for="time">Timings:</label>
@@ -175,11 +175,11 @@ class patientMedications extends Component {
 					 	<datalist id="time">
 					    	<option value="Once a day"/>
 					    	<option value="Twice a Day"/>
-					    	<option value="Thrice a Day "/>	
+					    	<option value="Thrice a Day "/>
 					    	<option value="Daily"/>
 					    	<option value="Weekly"/>
 					    	<option value="Monthly"/>
-					  </datalist>		
+					  </datalist>
 					</div>
 					<button className="btn btn-success" onClick = {this.addToPatientList} > Add</button>
 				</div>
@@ -197,7 +197,7 @@ class patientMedications extends Component {
 				<tbody>
 					{data}
 				</tbody>
-		</table>	
+		</table>
 		</div>
 	</div>
     );

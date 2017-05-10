@@ -28,14 +28,11 @@ class LoginCheck extends Component {
 	  }
 
   getPatientList = function(name) {
-	  this.makePostRequest('http://localhost:9000/doctor/loginCheck', name ,function(json){
-		  console.log("Response is " +JSON.stringify(json));
+	  this.makePostRequest('http://35.161.81.114:9000/doctor/loginCheck', name ,function(json){
 		  if( name.userType==="Patient"){
-			  console.log(name.userType);
 			  window.location = '/dashboard/?user=patient&id=' + json.id + "#/home" ;
 		  }
 		  else{
-			  console.log(name.userType);
 			  window.location = '/dashboard/searchPatient';
 		  }
 		}.bind(this));
@@ -43,17 +40,17 @@ class LoginCheck extends Component {
 
   ValidateUser = () => {
 		var email = document.getElementById("email").value;
-	    var pwd = document.getElementById("pwd").value;
-	    var userType = document.getElementsByName("userType")
-	    var u_value;
-	    for(var i = 0; i < userType.length; i++){
-	        if(userType[i].checked){
-	        	u_value = userType[i].value;
-	        }
-	    }
-	    var loginDetails = {email : email , pwd : pwd, userType : u_value};
-	    this.getPatientList(loginDetails);
-	 }
+    var pwd = document.getElementById("pwd").value;
+    var userType = document.getElementsByName("userType")
+    var u_value;
+    for(var i = 0; i < userType.length; i++){
+        if(userType[i].checked){
+        	u_value = userType[i].value;
+        }
+    }
+    var loginDetails = {email : email , pwd : pwd, userType : u_value};
+    this.getPatientList(loginDetails);
+ }
 
   render() {
     return (
@@ -67,8 +64,8 @@ class LoginCheck extends Component {
                       <form role="form" id="login-form" autocomplete="off"  onSubmit={this.ValidateUser}>
 
                      <div className="form-group">
-                      <input type="radio" id="doc" name="userType" value="Doctor" />   I am a Doctor 
-                    	 
+                      <input type="radio" id="doc" name="userType" value="Doctor" />   I am a Doctor
+
                       <input type="radio" id="pat"  name="userType" value="Patient"/>   I am a Patient
 
                      </div>

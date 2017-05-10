@@ -18,7 +18,6 @@ router.post( '/activites', function( req, res, next ) {
 		"WalkingRunningDistance" : activityData[0].WalkingRunningDistance,
 		"Date" : new Date(activityData[0].Date)
 	}];
-  console.log(activityData);
   db.getRecord(collection, {patientId: patientId}, function(document) {
     if ( document != null ) {
       db.updateRecord( collection,
@@ -35,7 +34,6 @@ router.post( '/activites', function( req, res, next ) {
 });
 
 router.post( '/glucose', function( req, res, next ) {
-  console.log(req.body);
   var collection = db.get().collection('glucose'),
   patientId = req.body.patientId,
   glucoseObject = {
@@ -64,7 +62,6 @@ router.post( '/glucose', function( req, res, next ) {
 });
 
 router.post( '/caloriesBurned', function( req, res, next ) {
-  console.log(req.body);
   var collection = db.get().collection('caloriesBurned'),
   patientId = req.body.patientId;
   calorieObject = {
@@ -121,25 +118,27 @@ router.post( '/caloriesIntake', function( req, res, next ) {
 });
 
 router.post( '/profileInfo', function( req, res, next ) {
+  console.log(req.body);
   var collection = db.get().collection('profileInfo'),
   patientId = req.body.patientId;
-  object = [{
-	  "height" : req.body.height,
-		"heightUnit" : req.body.heightUnit,
-		"weight" : req.body.weight,
-    "weightUnit" : req.body.weightUnit,
-    "bmi": req.body.bmi,
-    "bmiUnit": req.body.bmiUnit
-	}];
+  object = {
+      "height" : req.body.height,
+  		"heightUnit" : req.body.heightUnit,
+  		"weight" : req.body.weight,
+      "weightUnit" : req.body.weightUnit,
+      "bmi": req.body.bmi,
+      "bmiUnit": req.body.bmiUnit
+	};
+  console.log("object"+object);
   db.getRecord(collection, {patientId: patientId}, function(document) {
     if ( document != null ) {
       db.updateRecord( collection,
         { patientId: patientId },
-        { $addToSet: {patientInfo: {$each: object}}}, function(){
+        {"patientId" : patientId, "patientInfo": object}, function(){
         res.send('Success');
       });
     } else {
-      db.addRecord( collection, object, function(){
+      db.addRecord( collection, {"patientId" : req.body.patientId, "patientInfo": object}, function(){
         res.send('Success')
       });
     }
@@ -169,12 +168,14 @@ router.get( '/activities', function(req, res, next ) {
 });
 
 router.get( '/patientInfo', function(req, res, next ) {
-  var collection = db.get().collection('patientInfo');
+  console.log(req.query.patientId);
+  var collection = db.get().collection('profileInfo');
   db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
+    console.log(document);
     if ( document != null ) {
-      var record = document.patientInfo;
+      var record = document;
       res.setHeader('Content-Type', 'application/json');
-      res.send({"patientInfo":record});
+      res.send({"patientInfo":record.patientInfo});
     }else{
       res.send('No data');
     }
@@ -228,7 +229,7 @@ router.get( '/latestActivity', function(req, res, next ) {
   db.getRecord(collection, {patientId:parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.activity;
-      record = record.sort(custom_sort);
+      record = record.sort(custom_sort_diabetes);
       res.setHeader('Content-Type', 'application/json');
       res.send(record[0]);
     } else {
@@ -242,7 +243,6 @@ router.get( '/latestGlucose', function(req, res, next ) {
   db.getRecord(collection, {patientId: parseInt(req.query.patientId)}, function(document) {
     if ( document != null ) {
       var record = document.glucose;
-      console.log("record"+record[0]);
       record = record.sort(custom_sort);
       res.setHeader('Content-Type', 'application/json');
       res.send({"glucose":record[record.length-1]});

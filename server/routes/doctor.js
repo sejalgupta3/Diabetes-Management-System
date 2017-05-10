@@ -33,24 +33,19 @@ router.post('/searchPatientById', function(req,res,next){
 });
 
 router.post('/loginCheck', function(req,res,next){
-	 patientDetails = req.body.data;
-	 
-	// console.log("Login Data " + JSON.stringify(patientDetails));
-		 var collection = db.get().collection('patientDetails');
-		 	db.getRecord(collection, {email: patientDetails.email}, function(document) {
-		    if ( document != null ) {
-		    	console.log(JSON.stringify(document));
-		        res.send(JSON.stringify(document));
-		        }
-		    
-		  }); 
+	patientDetails = req.body.data;
+	var collection = db.get().collection('patientDetails');
+ 	db.getRecord(collection, {email: patientDetails.email}, function(document) {
+    if ( document != null ) {
+      res.send({"id":document.id, "name":document.fname});
+    }
+  });
 });
 
 router.get('/medicationsList', function(req,res,next){
 	var collection = db.get().collection('ml');
 	db.findRecordNoFilter(collection,function(document){
 		if(document!=null){
-
 			res.setHeader('Content-Type', 'application/json');
 			res.send(document);
 		}

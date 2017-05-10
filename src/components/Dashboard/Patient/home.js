@@ -10,10 +10,12 @@ class Home extends Component {
       caloriesBurned: '{}',
       caloriesIntake: '{}',
       predictedGlucose: '[]',
+      predictedMedication: '[]',
       patientInfo: '{}'
     };
-    this.predictionUrl = "http://ec2-34-208-156-165.us-west-2.compute.amazonaws.com:8000";
-    this.serverUrl = "http://localhost:9000",
+    this.predictionUrl = "http://34.208.156.165:8000";
+    this.serverUrl = "http://35.161.81.114:9000",
+    this.predictionMedicalUrl = "http://34.223.247.43:8000",
     this.activityGoal = 4000,
     this.caloriesIntakeGoal = 2000,
     this.caloriesBurnedGoal = 300
@@ -25,7 +27,7 @@ class Home extends Component {
     this.getLatestCaloriesBurned();
     this.getLatestCaloriesIntakeWidget();
     this.getProfileInfo();
-    this.getPredictedGlucose();
+    this.getPredictedMedication();
   }
 
   getUrlParameter = function(name) {
@@ -70,6 +72,23 @@ class Home extends Component {
      });
  }
 
+ makePostRequest2(url, params, callback) {
+    var request = new Request(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        data: params
+      }),
+      mode: 'cors',
+      redirect: 'follow'
+    });
+
+    fetch(request).then(function(response) {
+      return response.json();
+    }).then(function(j) {
+      callback(j);
+    });
+}
+
   getLatestSteps = function() {
     this.makeGetRequest(this.serverUrl+'/patient/latestActivity', function(json){
       this.setState({'steps':json})
@@ -94,15 +113,18 @@ class Home extends Component {
     }.bind(this));
   }
 
-  getPredictedGlucose = function() {
-    this.makePostRequest(this.predictionUrl, 19.6 ,function(data){
-      this.setState({'predictedGlucose':data.value[0]})
+  getPredictedMedication = function() {
+    this.makePostRequest2(this.predictionMedicalUrl, parseInt(this.getUrlParameter("id")) ,function(data){
+      this.setState({'predictedMedication':data.value})
     }.bind(this));
   }
 
   getProfileInfo = function() {
-    this.makeGetRequest(this.serverUrl+'/patient/profileInfo', function(data){
+    this.makeGetRequest(this.serverUrl+'/patient/patientInfo', function(data){
       this.setState({'patientInfo':data.patientInfo})
+      this.makePostRequest(this.predictionUrl, parseFloat(data.patientInfo.bmi) ,function(data){
+        this.setState({'predictedGlucose':data.value[0]})
+      }.bind(this));
     }.bind(this));
   }
 
@@ -156,7 +178,7 @@ class Home extends Component {
             <this.widget
               heading="WEIGHT"
               value={this.state.patientInfo.weight}
-              units={this.state.patientInfo.weightsUnit}
+              units={this.state.patientInfo.weightUnit}
               image = {
                 <img className="img-responsive" src="/images/weight.png"></img>
               }
@@ -164,52 +186,61 @@ class Home extends Component {
           </div>
           <div className="col-md-4">
             <this.widget
-              heading="HEALTH PREDICTIONS"
+              heading="GLUCOSE PREDICTIONS"
               value={this.state.predictedGlucose}
               image = {
-                <img className="img-responsive" src="/images/pg.png"></img>
+                <img className="img-responsive" src="/images/glucosep.png"></img>
               }
             />
           </div>
           <div className="col-md-4">
             <this.widget
-              heading = "ACTIVITY"
+              heading="MEDICATION PREDICTIONS"
+              value={this.state.predictedMedication}
+              image = {
+                <img className="img-responsive" src="/images/medical.png"></img>
+              }
+            />
+          </div>
+          <div className="col-md-6">
+            <this.widget
+              heading = "ACTIVITY GOAL TRACK"
               value = {this.state.steps.StepCount}
               units = "Steps"
               graph = {
                 <SolidGuage
-                  text = 'steps.'
-                  data= {[(this.state.steps.StepCount/this.activityGoal) * 100]}
+                  text = 'steps'
+                  data= {[this.state.steps.StepCount]}
                   units = 'steps'
                   goal = {this.activityGoal}
                 />
               }
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <this.widget
-              heading="CALORIES BURNED"
+              heading="CALORIES BURNED GOAL TRACK"
               value={this.state.caloriesBurned.data}
               units={this.state.caloriesBurned.unit}
               graph = {
                 <SolidGuage
                   text = 'calories to burn'
-                  data = {[(this.state.caloriesBurned.data/this.caloriesBurnedGoal) * 100]}
+                  data = {[this.state.caloriesBurned.data]}
                   units = 'kcal'
                   goal = {this.caloriesBurnedGoal}
                 />
               }
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <this.widget
-              heading="CALORIES INTAKE"
+              heading="CALORIES INTAKE GOAL TRACK"
               value={this.state.caloriesIntake.data}
               units={this.state.caloriesIntake.unit}
               graph = {
                 <SolidGuage
                   text =  'calories to intake'
-                  data = {[(this.state.caloriesIntake.data/this.caloriesIntakeGoal) * 100]}
+                  data = {[this.state.caloriesIntake.data]}
                   units = 'kcal'
                   goal = {this.caloriesIntakeGoal}
                 />

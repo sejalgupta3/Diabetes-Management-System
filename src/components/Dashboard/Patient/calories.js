@@ -13,7 +13,7 @@ class Calories extends Component {
       dates: '[]',
       caloriesTableBody: '[]'
     };
-    this.serverUrl = "http://localhost:9000";
+    this.serverUrl = "http://35.161.81.114:9000";
   }
 
   componentWillMount = function() {
@@ -175,7 +175,7 @@ class Calories extends Component {
                 <th>#</th>
                 <th>Date</th>
                 <th>Calories Intake</th>
-                <th>Calories Consumed</th>
+                <th>Calories Burned</th>
               </tr>
             </thead>
             {this.state.caloriesTableBody}

@@ -11,7 +11,7 @@ class Activities extends Component {
       activityTableBody: ''
     };
     this.activityGraph = this.activityGraph.bind(this);
-    this.serverUrl = "http://localhost:9000";
+    this.serverUrl = "http://35.161.81.114:9000";
   }
 
   componentWillMount = function() {

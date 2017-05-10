@@ -10,7 +10,7 @@ class Glucose extends Component {
       datesArr: '[]',
       glucoseTableBodyHtml: '[]'
     };
-    this.serverUrl = "http://localhost:9000";
+    this.serverUrl = "http://35.161.81.114:9000";
   }
 
   componentWillMount = function() {
@@ -98,7 +98,7 @@ class Glucose extends Component {
           );
         }
 
-        glucoseArr.push(avgG);
+        glucoseArr.push(avgG/g.length);
         dataHtmlArr.push(pArray);
       }
 

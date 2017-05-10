@@ -11,7 +11,7 @@ class Area extends Component {
                spacingBottom: 30
            },
            title: {
-               text: 'Glucose Records'
+                 text: 'Calories Records'
            },
            xAxis: {
                categories: this.props.dates

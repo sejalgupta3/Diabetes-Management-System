@@ -1,7 +1,7 @@
 /*General*/
 
 .txt-small {
-    font-size: 25px;
+    font-size: 15px;
     line-height: 10px;
     vertical-align: middle;
 }
@@ -127,6 +127,10 @@ nav .glyphicon font {
     margin: 0 auto;
 }
 
+.widget .panel-heading {
+    font-weight: 400;
+}
+
 
 /*Activity*/
 
@@ -160,6 +164,7 @@ nav .glyphicon font {
     border: 1px solid #999;
     border-radius: 10px;
     box-shadow: 10px 10px 5px #888888;
+    overflow: auto;
 }
 
 .demo-content2 {

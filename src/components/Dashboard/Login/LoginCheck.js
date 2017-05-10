@@ -5,14 +5,14 @@ class LoginCheck extends Component {
   constructor(props) {
     super(props);
 
- 
+
   }
-  
+
   makePostRequest(url,params, callback){
 	    var request = new Request(url, {
 	    	method: 'POST',
 	    	body: JSON.stringify({
-	    		data: params	
+	    		data: params
 	    	}),
 	    	mode: 'cors',
 	    	redirect: 'follow',
@@ -29,19 +29,17 @@ class LoginCheck extends Component {
 	  }
 
 getPatientList = function(name) {
-		this.makePostRequest('http://localhost:9000/doctor/loginCheck', name ,function(json){
-			 console.log("Response is " +json); 
+		this.makePostRequest('http://35.161.81.114:9000/doctor/loginCheck', name ,function(json){
 		    }.bind(this));
-	 }		
+	 }
 
 ValidateUser = () => {
-	   
+
 	    var email = document.getElementById("email").value;
 	    var pwd = document.getElementById("pwd").value;
 	    var userType = document.getElementById("userType").value;
 	    var loginDetails = {email : email , pwd : pwd, userType : userType};
 	    this.getPatientList(loginDetails);
-	    console.log(loginDetails);
 	  }
 
 
@@ -67,14 +65,14 @@ ValidateUser = () => {
                               <label for="key" className="sr-only">Password</label>
                               <input type="password" name="key" id="pwd" className="form-control" placeholder="Password"/>
                           </div>
-                         
+
                           <input type="submit" id="btn-login" className="btn btn-custom btn-lg btn-block" value="Log in"/>
                       </form>
-                      
+
           	    </div>
-      		</div> 
-      	</div> 
-      </div> 
+      		</div>
+      	</div>
+      </div>
   </section>
       </div>
     );
