@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Area from '../../charts/area'
+import Area from '../../charts/area';
+import Pagination from 'react-js-pagination';
 
 
 class Calories extends Component {
@@ -14,6 +15,7 @@ class Calories extends Component {
       caloriesTableBody: '[]'
     };
     this.serverUrl = "http://35.161.81.114:9000";
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount = function() {
@@ -138,10 +140,17 @@ class Calories extends Component {
       this.setState({caloriesBurned:caloriesBurnedArr});
       this.setState({dates:stringArr});
     }
+    //this.setState({'totalItemsCount':json.activity.length});
+    this.handlePageChange(1);
+  }
 
-    var tableRows = [];
+  displayTable = function(start, end) {
+    var tableRows = [],
+    stringArr = this.state.dates,
+    caloriesIntakeArr = this.state.caloriesIntake,
+    caloriesBurnedArr = this.state.caloriesBurned;
 
-    for(var j in stringArr){
+    for(var j=start;j<end;j++) {
       tableRows.push(
         (
         <tr>
@@ -158,8 +167,17 @@ class Calories extends Component {
         {tableRows}
       </tbody>
     );
-
     this.setState({caloriesTableBody:caloriesTableBodyHtml});
+  }
+
+  handlePageChange(pageNumber) {
+    var start = 10*(pageNumber-1),
+    end = start + 10;
+    if(this.state.dates.length < end) {
+      end = this.state.dates.length;
+    }
+    this.displayTable(start, end);
+    this.setState({activePage: pageNumber});
   }
 
   render() {
@@ -180,6 +198,13 @@ class Calories extends Component {
             </thead>
             {this.state.caloriesTableBody}
           </table>
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={this.state.dates.length}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
         </div>
       </div>
     );

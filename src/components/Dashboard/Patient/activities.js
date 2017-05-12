@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Column from '../../charts/column';
+import Pagination from 'react-js-pagination';
 
 class Activities extends Component {
   constructor(props) {
@@ -8,9 +9,13 @@ class Activities extends Component {
       activities: '[]',
       categories: '[]',
       data: '[]',
-      activityTableBody: ''
+      activityTableBody: '',
+      activePage: 1,
+      totalItemsCount: 0
     };
+
     this.activityGraph = this.activityGraph.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.serverUrl = "http://35.161.81.114:9000";
   }
 
@@ -27,34 +32,44 @@ class Activities extends Component {
 
   getActivities = function() {
     this.makeGetRequest(this.serverUrl+'/patient/activities', function(json){
+      this.setState({'activities':json.activity});
       var c = [];
       var d = [];
       var tableRows = [];
+      this.setState({'totalItemsCount':json.activity.length});
+      this.handlePageChange(1);
       for( var dateIndex in json.activity) {
         var date = new Date(json.activity[dateIndex].Date);
         c.push((parseInt(date.getMonth())+1)+'-'+date.getDate()+'-'+date.getFullYear());
         d.push(json.activity[dateIndex].StepCount);
-        tableRows.push(
-          (
-          <tr>
-            <td>{parseInt(dateIndex)+1}</td>
-            <td>{(parseInt(date.getMonth())+1)+'-'+date.getDate()+'-' + date.getFullYear()}</td>
-            <td>{json.activity[dateIndex].WalkingRunningDistance}</td>
-            <td>{json.activity[dateIndex].StepCount}</td>
-          </tr>
-        )
-        );
       }
-      var activityHtml = (
-        <tbody>
-          {tableRows}
-        </tbody>
-      );
-      this.setState({'activityTableBody':activityHtml});
-      this.setState({'activities':json.activity});
       this.setState({'categories':c});
       this.setState({'data':d})
     }.bind(this));
+  }
+
+  displayTable = function(start, end) {
+    var tableRows = [],
+    data =  this.state.activities;
+    for(var i=start; i<end;i++) {
+      var date = new Date(data[i].Date);
+      tableRows.push(
+        (
+        <tr>
+          <td>{parseInt(i)+1}</td>
+          <td>{(parseInt(date.getMonth())+1)+'-'+date.getDate()+'-' + date.getFullYear()}</td>
+          <td>{data[i].WalkingRunningDistance}</td>
+          <td>{data[i].StepCount}</td>
+        </tr>
+      )
+      );
+    }
+    var activityHtml = (
+      <tbody>
+        {tableRows}
+      </tbody>
+    );
+    this.setState({'activityTableBody':activityHtml});
   }
 
   makeGetRequest(url, callback) {
@@ -81,6 +96,16 @@ class Activities extends Component {
     );
   }
 
+  handlePageChange(pageNumber) {
+    var start = 10*(pageNumber-1),
+    end = start + 10;
+    if(this.state.totalItemsCount < end) {
+      end = this.state.totalItemsCount;
+    }
+    this.displayTable(start, end);
+    this.setState({activePage: pageNumber});
+  }
+
   render() {
     return (
       <div>
@@ -99,6 +124,13 @@ class Activities extends Component {
             </thead>
               {this.state.activityTableBody}
           </table>
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={this.state.totalItemsCount}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
         </div>
       </div>
     );

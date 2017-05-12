@@ -13,9 +13,9 @@ class Home extends Component {
       predictedMedication: '[]',
       patientInfo: '{}'
     };
-    this.predictionUrl = "http://34.208.156.165:8000";
+    this.predictionUrl = "http://ec2-34-208-156-165.us-west-2.compute.amazonaws.com:2000";
     this.serverUrl = "http://35.161.81.114:9000",
-    this.predictionMedicalUrl = "http://34.223.247.43:8000",
+    this.predictionMedicalUrl = "http://ec2-34-223-247-43.us-west-2.compute.amazonaws.com:8000",
     this.activityGoal = 4000,
     this.caloriesIntakeGoal = 2000,
     this.caloriesBurnedGoal = 300
@@ -160,7 +160,7 @@ class Home extends Component {
               value={this.state.patientInfo.bmi}
               units={this.state.patientInfo.bmiUnit}
               image = {
-                <img className="img-responsive" src="/images/BMI.png"></img>
+                <img className="img-responsive" src="/images/bmi.png"></img>
               }
             />
           </div>

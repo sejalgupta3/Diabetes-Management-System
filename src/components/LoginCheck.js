@@ -41,7 +41,12 @@ class LoginCheck extends Component {
   ValidateUser = () => {
 		var email = document.getElementById("email").value;
     var pwd = document.getElementById("pwd").value;
+
     var userType = document.getElementsByName("userType")
+    if(email=="" || pwd =="") {
+      alert("Empty fields ");
+    }
+    else {
     var u_value;
     for(var i = 0; i < userType.length; i++){
         if(userType[i].checked){
@@ -50,6 +55,7 @@ class LoginCheck extends Component {
     }
     var loginDetails = {email : email , pwd : pwd, userType : u_value};
     this.getPatientList(loginDetails);
+  }
  }
 
   render() {

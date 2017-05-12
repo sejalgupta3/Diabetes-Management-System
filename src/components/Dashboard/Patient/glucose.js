@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Line from '../../charts/line'
+import Line from '../../charts/line';
+import Pagination from 'react-js-pagination';
 
 class Glucose extends Component {
   constructor(props) {
@@ -8,9 +9,11 @@ class Glucose extends Component {
       glucoseJson: '{}',
       dataArr: '[]',
       datesArr: '[]',
-      glucoseTableBodyHtml: '[]'
+      glucoseTableBodyHtml: '[]',
+      dataHtmlArr: '[]'
     };
     this.serverUrl = "http://35.161.81.114:9000";
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount = function() {
@@ -104,27 +107,44 @@ class Glucose extends Component {
 
       this.setState({dataArr:glucoseArr});
       this.setState({datesArr:stringArr});
-
-      var tableRows = [];
-      for(var j in stringArr){
-        tableRows.push(
-          (
-          <tr>
-            <td>{parseInt(j)+1}</td>
-            <td>{stringArr[j]}</td>
-            <td>{dataHtmlArr[j]}</td>
-          </tr>
-        ));
-      }
-
-      var glucoseTableBodyHtml = (
-        <tbody>
-          {tableRows}
-        </tbody>
-      );
-
-      this.setState({glucoseTableBodyHtml:glucoseTableBodyHtml});
+      this.setState({dataHtmlArr:dataHtmlArr});
+      this.handlePageChange(1);
     }.bind(this));
+  }
+
+  displayTable = function(start, end) {
+    var tableRows = [],
+    stringArr = this.state.datesArr,
+    dataHtmlArr = this.state.dataHtmlArr;
+
+    for (var j=start;j<end;j++) {
+      tableRows.push(
+        (
+        <tr>
+          <td>{parseInt(j)+1}</td>
+          <td>{stringArr[j]}</td>
+          <td>{dataHtmlArr[j]}</td>
+        </tr>
+      ));
+    }
+
+    var glucoseTableBodyHtml = (
+      <tbody>
+        {tableRows}
+      </tbody>
+    );
+
+    this.setState({glucoseTableBodyHtml:glucoseTableBodyHtml});
+  }
+
+  handlePageChange(pageNumber) {
+    var start = 10*(pageNumber-1),
+    end = start + 10;
+    if(this.state.datesArr.length < end) {
+      end = this.state.datesArr.length;
+    }
+    this.displayTable(start, end);
+    this.setState({activePage: pageNumber});
   }
 
   render() {
@@ -144,6 +164,13 @@ class Glucose extends Component {
             </thead>
             {this.state.glucoseTableBodyHtml}
           </table>
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={this.state.datesArr.length}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
         </div>
       </div>
     );

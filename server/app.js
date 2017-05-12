@@ -42,7 +42,7 @@ app.get('*', (req, res) => {
 });
 
 // Connect to Mongo on start
-db.connect('mongodb://35.161.81.114:27017/'+databaseName, function(err) {
+db.connect('mongodb://52.38.69.56:27017/'+databaseName, function(err) {
   console.log("successs");
     if (err) {
         console.log(err);

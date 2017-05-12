@@ -4,14 +4,14 @@ class Header extends Component {
   render() {
     return (
           <nav className="navbar navbar-static-top" role="navigation">
-            <a className="navbar-brand "  href="# ">
+            <a className="navbar-brand"  href="/landing">
               <span className="glyphicon glyphicon-tint">
                 <font>Healthify</font>
               </span>
             </a>
-            <div className="container">
+            <div className="">
             <p className="navbar-text navbar-right">
-            <a href="#" className="navbar-link">
+            <a href="/login" className="navbar-link">
               <span className="glyphicon glyphicon-log-out"></span>
             </a>
             </p>

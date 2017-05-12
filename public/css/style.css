@@ -7,10 +7,10 @@
 }
 
 .homePage {
-    width: 100%;
-    height: 768px;
-    background-image: url("http://metabariatrics.com/images/slider.jpg");
-    background-size: cover;
+    display: block;
+    height: 1000px;
+    padding-top: 170px;
+    background-color: #d6e5ff;
 }
 
 
@@ -323,4 +323,95 @@ nav .glyphicon font {
 
 .react-calendar-heatmap .color-scale-4 {
     fill: #1e6823;
+}
+
+
+/*Pagination*/
+
+.pagination {
+    display: block;
+    text-align: center;
+}
+
+.pagination>li {
+    display: inline-block;
+}
+
+
+/*Home Page*/
+
+.cloudIntroDiv {
+    color: white;
+    width: 100%;
+    height: 600px;
+    background-image: url("/images/banner.jpg");
+    background-size: cover;
+}
+
+.cloudIntroDiv h1 {
+    font-size: 85px;
+}
+
+.cloudIntroDiv h4 {
+    font-size: 30px;
+}
+
+.multiDeviceSupportDiv {
+    height: 600px;
+    margin: 0;
+}
+
+.multiDeviceSupportDiv.row {
+    margin: 0;
+}
+
+.multiDeviceSupportDiv h1 {
+    font-size: 45px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.multiDeviceSupportDiv.parallex1 {
+    color: white;
+    background: url("/images/p1.jpg") no-repeat fixed center center / cover;
+}
+
+.multiDeviceSupportDiv.parallex2 {
+    color: white;
+    background: url("/images/healthy-life.jpg") no-repeat fixed center center / cover;
+}
+
+.multiDeviceSupportDiv.parallex3 {
+    color: black;
+    background: url("/images/graph.jpg") no-repeat fixed center center / cover;
+}
+
+.landinNav {
+    background-color: #046389;
+}
+
+.landinNav .brand-logo i {
+    color: red;
+    margin-left: 20px;
+}
+
+.aboutUsDiv {
+    padding: 50px 0;
+}
+
+.aboutUsDiv img {
+    max-width: 60%;
+    margin: 0 auto;
+    display: block;
+}
+
+.ios {
+    padding: 50px 0;
+}
+
+
+/*.page-footer*/
+
+.landing-footer.page-footer {
+    background-color: #046389;
 }
